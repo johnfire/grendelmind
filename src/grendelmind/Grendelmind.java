@@ -5,11 +5,14 @@
  */
 package grendelmind;
 
+import basicstuff.basicObject;
+import basicstuff.message;
+
 /**
  *
  * @author christopherrehm
  */
-public class Grendelmind {
+public class Grendelmind extends basicObject {
 
     /**
      * @param args the command line arguments
