@@ -25,6 +25,9 @@ public class Grendelmind /*extends basicObject*/ {
         grendelDecider myDecider = new grendelDecider();
         grendelrouter myRouter = new grendelrouter();
         
+        myDecider.start();
+        myRouter.start();
+        
         
         
     }
