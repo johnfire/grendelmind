@@ -5,8 +5,8 @@
  */
 package analyzers;
 
-import basicstuff.*;
-import grendelBrainParts.grendelDecider;
+import basicstuff.basicObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;

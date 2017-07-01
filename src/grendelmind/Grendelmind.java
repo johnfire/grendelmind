@@ -5,20 +5,28 @@
  */
 package grendelmind;
 
-import basicstuff.basicObject;
-import basicstuff.message;
+//import basicstuff.*;
+import grendelBrainParts.*;
+
+    
 
 /**
  *
  * @author christopherrehm
  */
-public class Grendelmind extends basicObject {
+public class Grendelmind /*extends basicObject*/ {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
+        grendelDecider myDecider = new grendelDecider();
+        grendelrouter myRouter = new grendelrouter();
+        
+        
+        
     }
     
 }
