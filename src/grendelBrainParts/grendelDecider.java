@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author christopherrehm
  *//**/
-public class grendelDecider extends basicObject  implements Runnable {
+public class grendelDecider extends basicObject {
     int pid;
     int runVar = 1;
     
@@ -28,15 +28,13 @@ public class grendelDecider extends basicObject  implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(grendelDecider.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        System.out.println("we are in the grendelDecider routine first time"+ "my process ID is "+ pid);
-        while (runVar== 1){
-            try {
-                Thread.sleep(5000);
-                System.out.println("we are in the grendelDecider routine, process number "+pid);  
-            } catch (InterruptedException ex) {
-                Logger.getLogger(grendelDecider.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }  
+       
+        ObjectStatus mystats = new basicstuff.ObjectStatus();
+        mystats.setMyName("grendelDecider");
+        Thread intInfThread = new Thread(mystats);
+        intInfThread.start();
+       
     }
 }
+Contact GitHub API Training Shop Blog About
+
