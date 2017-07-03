@@ -6,12 +6,8 @@
 package grendelBrainParts;
 
 import basicstuff.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -20,7 +16,6 @@ import java.util.logging.Logger;
 public class GrendelRouter extends BasicObject {
     
     int MyId = 101; 
-    int pid;
     int port = 5000;
     
 
@@ -60,14 +55,7 @@ public class GrendelRouter extends BasicObject {
         Thread routerThread = new Thread(myStats);
         routerThread.start();
         
-        //System.out.println("we are in the grendelRouter routine");
-        // get this process number
-        try {
-             pid = Integer.parseInt(new File("/proc/self").getCanonicalFile().getName());
-        } catch (IOException ex) {
-            Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
+        this.systemMessage("Just entered the Grendel Router routine");
         //create server and run
         
         GreetingServer myServer;
@@ -77,14 +65,14 @@ public class GrendelRouter extends BasicObject {
         this.systemMessageStartUp("-----Started the router cell server thread-----");
         
         while(true) {
-            //unProcessedMessages.add(myServer
-            //int numberOfMessages =  myServer.aList.size();
-            
+            // add messages
             unProcessedMessages.addAll(myServer.aList);
             myServer.aList.clear();
+            // check to see whats coming thru
             if (this.unProcessedMessages != null){
                 System.out.println(this.unProcessedMessages);
             }
+            // more process code goes here
         }
     }
     
