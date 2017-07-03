@@ -18,8 +18,10 @@ import java.util.logging.Logger;
  */
 public class GrendelRouter extends BasicObject {
     
+    int MyId = 101; 
     int pid;
     int port = 5000;
+    
 
     /**
      *Set up a blank linked list for use by processor
