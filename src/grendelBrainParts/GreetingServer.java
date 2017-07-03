@@ -34,13 +34,12 @@ import java.util.logging.Logger;
 public class GreetingServer extends BasicObject {
     LinkedList<Message> aList = new LinkedList();
     
-
 //    GreetingServer(LinkedList<Message> unProcessedMessages) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 //    }
     
     protected void GreetingServer(LinkedList<Message> thelist){
-       aList = thelist;
+       aList = thelist;  
     }
 
     private ServerSocket serverSocket;
@@ -64,12 +63,20 @@ public class GreetingServer extends BasicObject {
     
     //this is supposed to be static
     public static class EchoClientHandler extends Thread {
+        int myconnection = 0;
+        boolean LockConnection = false;
+        
         private final Socket clientSocket;
-        public LinkedList<Message> daMessage = null;
+        
+        public LinkedList<Message> daMessage;
+        public LinkedList<Message> myOutputList;
+        
+        //myOutputList = new LinkedList<>();
     
         public EchoClientHandler(Socket socket,LinkedList<Message> mylist) {
             this.clientSocket = socket;
             daMessage = mylist;
+            this.myOutputList = new LinkedList();  
         }
  
         @Override
@@ -85,17 +92,77 @@ public class GreetingServer extends BasicObject {
                 String inputLine;
                 while(true) {
                     try {
-                        myMessageHolder= (Message)inFromClient.readObject();
+                        // read objects from input srtream as available
+                        while(inFromClient.available()>= 50){
+                           myMessageHolder = (Message)inFromClient.readObject();
+                        }
+                        // test to see if lock connection neeeds to be set
+                        if(LockConnection == false) {// lock this handler to the correct sender
+                           this.myconnection = (int) myMessageHolder.showOrigin();
+                           LockConnection = true;
+                        }
+                        
                         System.out.println("-----*** in echoClientHandlerServer ***----------SYSTEM MESSAGE-RECIEVED A MESSAGE OBJECT----- " + myMessageHolder);
+                        
+                        // need code here to loop and load up unprocessed message list 
                         this.daMessage.add(myMessageHolder);
-                   
-                        System.out.println("-----*** in echoClientHandlerServer ***----------System Message saved to local linked list");
-                        //outToClient.writeObject();
+                        
+                        //done getting messages now  send messages
+                        switch(this.myconnection){
+                            case 1:
+                                break;
+                            case 2:
+                                break;
+                            case 3:
+                                //this.myOUtputList = visionList;
+                                break;
+                            case 4:
+                                //this.myOutputLst = soundList;
+                                break;
+                            case 5:
+                                //this.myOutputList = soundInList;
+                                break;
+                            case 6:
+                                //this.myOutputList = soundOutList;
+                                break;
+                            case 7:
+                                //this.myOutputlist = movementList;
+                                break;
+                            case 8:
+                                //this.myOutputList = internetList; 
+                                break;
+                            case 9:
+                                break;
+                            case 10:
+                                break;
+                            case 11:
+                                break;
+                            case 12:
+                                break;
+                            case 13:
+                                break;
+                            case 14:
+                                break;
+                            case 15:
+                                //thismyOutputList = outputList;
+                                break;
+                            case 100:
+                                break;
+                            case 102:
+                                break;
+                            default:
+                                break;      
+                        }
+                        
+                        System.out.println("-----*** in echoClientHandlerServer ***----------System Message saved to" + " local linked list");
+                        //this code sends out all messages to where they need to go.
+                        while(myOutputList.isEmpty() != true) {
+                            outToClient.writeObject(myOutputList.removeFirst());
+                        }  
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
                     }   
                 }
- 
             } catch (IOException ex){
                 Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -8,6 +8,7 @@ package grendelBrainParts;
 import basicstuff.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,10 +28,25 @@ public class GrendelRouter extends BasicObject {
      *Set up a blank linked list for use by processor
      */
     public LinkedList<Message> unProcessedMessages;
+    public LinkedList<Message> internetMessages;
+    public LinkedList<Message> outputMessages;
+    public LinkedList<Message> soundInMessages;
+    public LinkedList<Message> VisionInMessages;
+    public LinkedList<Message> greetingClientMessages;
+    public LinkedList<Message> grendelDeciderMessages;
+    public LinkedList<Message> grendelRouterMessages;
+    public LinkedList<Message> grendelGreetingServerMessages;
+    
 
     public GrendelRouter() {
         this.unProcessedMessages = new LinkedList();
-       
+        this.internetMessages = new LinkedList();   
+        
+        ArrayList<LinkedList<Message>> bigList;
+        bigList = new ArrayList<>();
+        bigList.add(this.unProcessedMessages);
+        bigList.add(this.internetMessages);
+
     }
     
     @Override
@@ -62,10 +78,94 @@ public class GrendelRouter extends BasicObject {
         
         while(true) {
             //unProcessedMessages.add(myServer
+            //int numberOfMessages =  myServer.aList.size();
+            
+            unProcessedMessages.addAll(myServer.aList);
+            myServer.aList.clear();
+            if (this.unProcessedMessages != null){
+                System.out.println(this.unProcessedMessages);
+            }
         }
     }
-
-    public void addMessage(Message aMessage){
-        this.unProcessedMessages.addLast(aMessage);    
+    
+    public class processor extends Thread {
+        LinkedList<Message> theList;
+        LinkedList<Message> myoutlist;
+        
+        //you have to pass all the linked lists for delivery to this function as it handles 
+        // all of the sorting into the various out lists used by the various 
+        public void processor(LinkedList<Message> unworkedList, LinkedList<Message> internetList) {
+            theList = unworkedList;
+            myoutlist = internetList;
+        }
+        
+        @Override
+        public void run() {
+            
+            int listSize = theList.size();
+            Message messageInQueue = new Message();
+            //messageNumberInQueue = 0;
+            long destination;
+            
+            // for each message :
+            while(theList.isEmpty()!= true){
+                // read destination
+                messageInQueue = theList.removeFirst();
+                destination = getDestination(messageInQueue);
+                int y =(int) destination;
+                //if messege is going to device on internet:
+                //place in queue for that destination
+                // otherwise send directly to decider or analyzer
+                switch (y){
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    case 8: // interent interface
+                        myoutlist.addLast(internetInterface, messageInQueue);
+                        break;
+                    case 9:
+                        break;
+                    case 10:
+                        break;
+                    case 11:
+                        break;
+                    case 12:
+                        break;
+                    case 13:
+                        break;
+                    case 14:
+                        break;
+                    case 15:
+                        break;
+                    case 100:
+                        break;
+                    case 101: 
+                        break;
+                    default:
+                        break;  
+                }  
+            }
+        }
+        
+        private long getDestination(Message msgNr){
+           long destination =0;
+            destination = msgNr.showDestination(destination);
+            // do the work here. 
+            
+            return destination;
+        }
     }
 }
