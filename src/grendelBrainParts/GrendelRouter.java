@@ -28,6 +28,7 @@ public class GrendelRouter extends BasicObject {
 
     public GrendelRouter() {
         this.unProcessedMessages = new LinkedList();
+       
     }
     
     @Override
@@ -47,7 +48,10 @@ public class GrendelRouter extends BasicObject {
         } catch (IOException ex) {
             Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+      
         //create server and run
+        
         GreetingServer myServer = new GreetingServer();
         
         Thread theServerThread = new Thread(myServer);
