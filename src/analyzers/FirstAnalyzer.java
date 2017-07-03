@@ -22,10 +22,6 @@ public class FirstAnalyzer extends BasicObject implements Runnable{
     @Override
     public void run() {   
     
-        try {
-             pid = Integer.parseInt(new File("/proc/self").getCanonicalFile().getName());
-        } catch (IOException ex) {
-            Logger.getLogger(FirstAnalyzer.class.getName()).log(Level.SEVERE, null, ex);
-        }    
+        pid=this.getPID();
     }
 }
