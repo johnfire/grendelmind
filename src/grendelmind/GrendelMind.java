@@ -12,7 +12,7 @@ import grendelBrainParts.*;
  *
  * @author christopherrehm
  */
-public class GrendelMind extends basicObject {
+public class GrendelMind extends BasicObject {
 
     /**
      * @param args the command line arguments
