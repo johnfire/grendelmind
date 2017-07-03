@@ -8,7 +8,7 @@ package grendelmind;
 import basicstuff.*;
 import grendelBrainParts.*;
 
-/**
+/** starts up the parts of grendel mind. does nothing else. contains main function, this runs the program
  *
  * @author christopherrehm
  */
