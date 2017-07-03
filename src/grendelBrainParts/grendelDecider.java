@@ -36,5 +36,5 @@ public class grendelDecider extends basicObject {
        
     }
 }
-Contact GitHub API Training Shop Blog About
+
 
