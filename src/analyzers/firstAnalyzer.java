@@ -18,26 +18,14 @@ import java.util.logging.Logger;
  */
 public class firstAnalyzer extends basicObject implements Runnable{
     int pid;
-    int runVar = 1;
     
     @Override
     public void run() {   
-    System.out.println("we are in the firstAnalyzer routine");
- 
+    
         try {
              pid = Integer.parseInt(new File("/proc/self").getCanonicalFile().getName());
         } catch (IOException ex) {
             Logger.getLogger(firstAnalyzer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        System.out.println("we are in the firstAnalyzer routine first time"+ "my process ID is "+ pid);
-        while (runVar== 1){
-            try {
-                Thread.sleep(5000);
-                System.out.println("we are in the firstAnalyzer routine, process number "+pid);  
-            } catch (InterruptedException ex) {
-                Logger.getLogger(firstAnalyzer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }  
+        }    
     }
 }
