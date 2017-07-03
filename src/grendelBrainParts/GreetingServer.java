@@ -54,7 +54,6 @@ public class GreetingServer extends basicObject {
     private static class EchoClientHandler extends Thread {
         private final Socket clientSocket;
     
- 
         public EchoClientHandler(Socket socket) {
             this.clientSocket = socket;
         }
@@ -84,7 +83,7 @@ public class GreetingServer extends basicObject {
                 }
  
             } catch (IOException ex){
-                Logger.getLogger(grendelrouter.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

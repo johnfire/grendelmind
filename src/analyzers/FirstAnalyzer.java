@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author christopherrehm
  */
-public class firstAnalyzer extends basicObject implements Runnable{
+public class FirstAnalyzer extends basicObject implements Runnable{
     int pid;
     
     @Override
@@ -25,7 +25,7 @@ public class firstAnalyzer extends basicObject implements Runnable{
         try {
              pid = Integer.parseInt(new File("/proc/self").getCanonicalFile().getName());
         } catch (IOException ex) {
-            Logger.getLogger(firstAnalyzer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FirstAnalyzer.class.getName()).log(Level.SEVERE, null, ex);
         }    
     }
 }

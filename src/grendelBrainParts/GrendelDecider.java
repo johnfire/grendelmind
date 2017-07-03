@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author christopherrehm
  *//**/
-public class grendelDecider extends basicObject {
+public class GrendelDecider extends basicObject {
     int pid;
     int runVar = 1;
     
@@ -26,12 +26,12 @@ public class grendelDecider extends basicObject {
         try {
              pid = Integer.parseInt(new File("/proc/self").getCanonicalFile().getName());
         } catch (IOException ex) {
-            Logger.getLogger(grendelDecider.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GrendelDecider.class.getName()).log(Level.SEVERE, null, ex);
         }
        
-        ObjectStatus mystats = new basicstuff.ObjectStatus();
-        mystats.setMyName("grendelDecider");
-        Thread intInfThread = new Thread(mystats);
+        ObjectStatus myStats = new basicstuff.ObjectStatus();
+        myStats.setMyName("grendelDecider");
+        Thread intInfThread = new Thread(myStats);
         intInfThread.start();
        
     }

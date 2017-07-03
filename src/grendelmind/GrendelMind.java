@@ -12,17 +12,17 @@ import grendelBrainParts.*;
  *
  * @author christopherrehm
  */
-public class Grendelmind extends basicObject {
+public class GrendelMind extends basicObject {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        grendelDecider myDecider = new grendelDecider();
-        Thread theDecider =new Thread(myDecider);
-        grendelrouter myRouter = new grendelrouter();
-        Thread theRouter =new Thread(myRouter);
+        GrendelDecider myDecider = new GrendelDecider();
+        Thread theDecider = new Thread(myDecider);
+        GrendelRouter myRouter = new GrendelRouter();
+        Thread theRouter = new Thread(myRouter);
         theDecider.start();
         theRouter.start();   
     }   
