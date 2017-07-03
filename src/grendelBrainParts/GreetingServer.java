@@ -32,14 +32,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GreetingServer extends BasicObject {
-    static LinkedList aList;
+    LinkedList aList = new LinkedList();
+    
 
 //    GreetingServer(LinkedList<Message> unProcessedMessages) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 //    }
     
-    protected void GreetingServer(LinkedList<Message> unProcessedMessages){
-       aList = unProcessedMessages;
+    protected void GreetingServer(LinkedList<Message> thelist){
+       aList = thelist;
     }
 
     private ServerSocket serverSocket;
