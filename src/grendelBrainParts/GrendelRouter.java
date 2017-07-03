@@ -51,15 +51,19 @@ public class GrendelRouter extends BasicObject {
         } catch (IOException ex) {
             Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-      
+       
         //create server and run
         
-        GreetingServer myServer = new GreetingServer();
-        
+        GreetingServer myServer;
+        myServer = new GreetingServer();
         Thread theServerThread = new Thread(myServer);
         theServerThread.start();
-        System.out.println("-----System Message- started server thread-----");
+        //System.out.println("-----System Message- started server thread-----");
+        this.systemMessageStartUp("-----Started the router cell server thread-----");
+        
+        while(true) {
+            //unProcessedMessages = myServer.
+        }
     }
 
     public void addMessage(Message aMessage){
