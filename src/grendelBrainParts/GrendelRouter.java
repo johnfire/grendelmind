@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author christopherrehm
  */
-public class GrendelRouter extends basicObject {
+public class GrendelRouter extends BasicObject {
     
     int pid;
     int port = 5000;
@@ -24,7 +24,7 @@ public class GrendelRouter extends basicObject {
     /**
      *Set up a blank linked list for use by processor
      */
-    public LinkedList<message> unProcessedMessages;
+    public LinkedList<Message> unProcessedMessages;
 
     public GrendelRouter() {
         this.unProcessedMessages = new LinkedList();
@@ -55,7 +55,7 @@ public class GrendelRouter extends basicObject {
         System.out.println("-----System Message- started server thread-----");
     }
 
-    public void addMessage(message aMessage){
+    public void addMessage(Message aMessage){
         this.unProcessedMessages.addLast(aMessage);    
     }
 }
