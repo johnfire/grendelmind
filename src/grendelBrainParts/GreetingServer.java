@@ -27,10 +27,21 @@ package grendelBrainParts;
 import basicstuff.*;
 import java.net.*;
 import java.io.*;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GreetingServer extends BasicObject {
+    static LinkedList aList;
+
+//    GreetingServer(LinkedList<Message> unProcessedMessages) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+    
+    protected void GreetingServer(LinkedList<Message> unProcessedMessages){
+       aList = unProcessedMessages;
+    }
+
     private ServerSocket serverSocket;
    
     /**
@@ -43,7 +54,7 @@ public class GreetingServer extends BasicObject {
             serverSocket = new ServerSocket(5000);
             System.out.println("-----System Message-starting server-----");
             while (true) {
-                new EchoClientHandler(serverSocket.accept()).start();
+                new EchoClientHandler(serverSocket.accept(),aList).start();
             }
         } catch (IOException e) {
             System.out.println("-----System message - failure at echoClientServer startup");
@@ -53,9 +64,11 @@ public class GreetingServer extends BasicObject {
     //this is supposed to be static
     private static class EchoClientHandler extends Thread {
         private final Socket clientSocket;
+        public LinkedList<Message> daMessage = null;
     
-        public EchoClientHandler(Socket socket) {
+        public EchoClientHandler(Socket socket,LinkedList<Message> mylist) {
             this.clientSocket = socket;
+            daMessage = mylist;
         }
  
         @Override
@@ -65,7 +78,7 @@ public class GreetingServer extends BasicObject {
             System.out.println("-----System Message Entering client handler");
             try {
                 
-                //ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+                ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
                 ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
 
                 //out = new ObjectOutputStream(clientSocket.getOutputStream(), true);
@@ -76,6 +89,9 @@ public class GreetingServer extends BasicObject {
                     try {
                         myMessageHolder= (Message)inFromClient.readObject();
                         System.out.println("-----SYSTEM MESSAGE-RECIEVED A MESSAGE OBJECT----- " + myMessageHolder);
+                        this.daMessage.add(myMessageHolder);
+                        //alist.addLast((Message)myMessageHolder);
+                        System.out.println("-----System Message saved to local linked list");
                         //outToClient.writeObject();
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
