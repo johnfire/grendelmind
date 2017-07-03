@@ -5,7 +5,7 @@
  */
 package analyzers;
 
-import basicstuff.basicObject;
+import basicstuff.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author christopherrehm
  */
-public class FirstAnalyzer extends basicObject implements Runnable{
+public class FirstAnalyzer extends BasicObject implements Runnable{
     int pid;
     
     @Override
