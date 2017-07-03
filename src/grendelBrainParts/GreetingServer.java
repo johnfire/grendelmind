@@ -30,7 +30,7 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GreetingServer extends basicObject {
+public class GreetingServer extends BasicObject {
     private ServerSocket serverSocket;
    
     /**
@@ -61,7 +61,7 @@ public class GreetingServer extends basicObject {
         @Override
         public void run() {
             //Object myObject =null;
-            message myMessageHolder = null;
+            Message myMessageHolder = null;
             System.out.println("-----System Message Entering client handler");
             try {
                 
@@ -74,7 +74,7 @@ public class GreetingServer extends basicObject {
                 String inputLine;
                 while(true) {
                     try {
-                        myMessageHolder= (message)inFromClient.readObject();
+                        myMessageHolder= (Message)inFromClient.readObject();
                         System.out.println("-----SYSTEM MESSAGE-RECIEVED A MESSAGE OBJECT----- " + myMessageHolder);
                         //outToClient.writeObject();
                     } catch (ClassNotFoundException ex) {
