@@ -58,11 +58,10 @@ public class GrendelRouter extends BasicObject {
         myServer = new GreetingServer();
         Thread theServerThread = new Thread(myServer);
         theServerThread.start();
-        //System.out.println("-----System Message- started server thread-----");
         this.systemMessageStartUp("-----Started the router cell server thread-----");
         
         while(true) {
-            //unProcessedMessages = myServer.
+            //unProcessedMessages.add(myServer
         }
     }
 
