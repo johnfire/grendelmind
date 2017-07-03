@@ -5,31 +5,25 @@
  */
 package grendelmind;
 
-//import basicstuff.*;
+import basicstuff.*;
 import grendelBrainParts.*;
-
-    
 
 /**
  *
  * @author christopherrehm
  */
-public class Grendelmind /*extends basicObject*/ {
+public class Grendelmind extends basicObject {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
         grendelDecider myDecider = new grendelDecider();
+        Thread theDecider =new Thread(myDecider);
         grendelrouter myRouter = new grendelrouter();
-        
-        myDecider.start();
-        myRouter.start();
-        
-        
-        
-    }
-    
+        Thread theRouter =new Thread(myRouter);
+        theDecider.start();
+        theRouter.start();   
+    }   
 }
