@@ -22,6 +22,7 @@ public class GrendelDecider extends BasicObject {
     @Override
     public void run() {   
     System.out.println("we are in the grendelDecider routine");
+    //this.systemMessageStartUp("Grendel Decider is now starting");
  
         try {
              pid = Integer.parseInt(new File("/proc/self").getCanonicalFile().getName());
