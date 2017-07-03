@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *//**/
 public class GrendelDecider extends BasicObject {
     int pid;
-    int runVar = 1;
+   int MyId = 100;
     
     @Override
     public void run() {   
