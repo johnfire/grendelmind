@@ -17,7 +17,6 @@ public class GrendelRouter extends BasicObject {
     
     int MyId = 101; 
     int port = 5000;
-    
 
     /**
      *Set up a blank linked list for use by processor
@@ -32,7 +31,6 @@ public class GrendelRouter extends BasicObject {
     public LinkedList<Message> grendelRouterMessages;
     public LinkedList<Message> grendelGreetingServerMessages;
     
-
     public GrendelRouter() {
         this.unProcessedMessages = new LinkedList();
         this.internetMessages = new LinkedList();   
