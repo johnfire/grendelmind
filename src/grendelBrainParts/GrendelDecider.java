@@ -6,36 +6,25 @@
 package grendelBrainParts;
 
 import basicstuff.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author christopherrehm
  *//**/
 public class GrendelDecider extends BasicObject {
-    int pid;
+
    int MyId = 100;
     
     @Override
     public void run() {   
-    //System.out.println("we are in the grendelDecider routine");
+
     this.systemMessageStartUp("Starting the Decider cell");
-    //this.systemMessageStartUp("Grendel Decider is now starting");
- 
-        try {
-             pid = Integer.parseInt(new File("/proc/self").getCanonicalFile().getName());
-        } catch (IOException ex) {
-            Logger.getLogger(GrendelDecider.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
+
         ObjectStatus myStats = new basicstuff.ObjectStatus();
         myStats.setMyName("grendelDecider");
-        Thread intInfThread = new Thread(myStats);
-        intInfThread.start();
-       
+        Thread deciderThread = new Thread(myStats);
+        deciderThread.start();
+       this.systemMessageStartUp("started grendel decider cell");
     }
 }
 
