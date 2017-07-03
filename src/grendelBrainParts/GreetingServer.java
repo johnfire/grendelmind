@@ -32,7 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GreetingServer extends BasicObject {
-    LinkedList aList = new LinkedList();
+    LinkedList<Message> aList = new LinkedList();
     
 
 //    GreetingServer(LinkedList<Message> unProcessedMessages) {
@@ -53,19 +53,17 @@ public class GreetingServer extends BasicObject {
     public void run() {
         try {
             serverSocket = new ServerSocket(5000);
-            //System.out.println("-----System Message-starting server-----");
             this.systemMessageStartUp("-----started the ServerSocket-----");
             while (true) {
                 new EchoClientHandler(serverSocket.accept(),aList).start();
             }
         } catch (IOException e) {
-            //System.out.println("-----System message - failure at echoClientServer startup");
             this.systemMessageError("failure at the echoClientServer startup");
         }
     }
     
     //this is supposed to be static
-    private static class EchoClientHandler extends Thread {
+    public static class EchoClientHandler extends Thread {
         private final Socket clientSocket;
         public LinkedList<Message> daMessage = null;
     
@@ -76,7 +74,6 @@ public class GreetingServer extends BasicObject {
  
         @Override
         public void run() {
-            //Object myObject =null;
             Message myMessageHolder = null;
             System.out.println("-----*** in echoClientHandlerServer ***----- System Message Entering client handler");
             
@@ -84,9 +81,6 @@ public class GreetingServer extends BasicObject {
                 
                 ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
                 ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
-
-                //out = new ObjectOutputStream(clientSocket.getOutputStream(), true);
-                //in = new ObjectInputStream(new (clientSocket.getInputStream()));
              
                 String inputLine;
                 while(true) {
@@ -94,7 +88,7 @@ public class GreetingServer extends BasicObject {
                         myMessageHolder= (Message)inFromClient.readObject();
                         System.out.println("-----*** in echoClientHandlerServer ***----------SYSTEM MESSAGE-RECIEVED A MESSAGE OBJECT----- " + myMessageHolder);
                         this.daMessage.add(myMessageHolder);
-                        //alist.addLast((Message)myMessageHolder);
+                   
                         System.out.println("-----*** in echoClientHandlerServer ***----------System Message saved to local linked list");
                         //outToClient.writeObject();
                     } catch (ClassNotFoundException ex) {
