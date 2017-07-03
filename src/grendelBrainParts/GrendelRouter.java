@@ -134,7 +134,7 @@ public class GrendelRouter extends BasicObject {
                     case 7:
                         break;
                     case 8: // interent interface
-                        myoutlist.addLast(internetInterface, messageInQueue);
+                       // myoutlist.addLast(internetInterface, messageInQueue);
                         break;
                     case 9:
                         break;
