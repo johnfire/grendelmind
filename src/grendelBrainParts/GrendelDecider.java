@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author christopherrehm
  *//**/
-public class GrendelDecider extends basicObject {
+public class GrendelDecider extends BasicObject {
     int pid;
     int runVar = 1;
     
