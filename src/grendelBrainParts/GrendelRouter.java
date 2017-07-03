@@ -37,13 +37,14 @@ public class GrendelRouter extends BasicObject {
     public void run() {
         //create a server mem space
         //GreetingServer myServer = null;
+        this.systemMessageStartUp("starting the router cell");
         
         ObjectStatus myStats = new basicstuff.ObjectStatus();
         myStats.setMyName("grendelRouter");
         Thread routerThread = new Thread(myStats);
         routerThread.start();
         
-        System.out.println("we are in the grendelRouter routine");
+        //System.out.println("we are in the grendelRouter routine");
         // get this process number
         try {
              pid = Integer.parseInt(new File("/proc/self").getCanonicalFile().getName());

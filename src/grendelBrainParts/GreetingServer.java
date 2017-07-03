@@ -52,12 +52,14 @@ public class GreetingServer extends BasicObject {
     public void run() {
         try {
             serverSocket = new ServerSocket(5000);
-            System.out.println("-----System Message-starting server-----");
+            //System.out.println("-----System Message-starting server-----");
+            this.systemMessageStartUp("-----started the ServerSocket-----");
             while (true) {
                 new EchoClientHandler(serverSocket.accept(),aList).start();
             }
         } catch (IOException e) {
-            System.out.println("-----System message - failure at echoClientServer startup");
+            //System.out.println("-----System message - failure at echoClientServer startup");
+            this.systemMessageError("failure at the echoClientServer startup");
         }
     }
     
@@ -75,7 +77,8 @@ public class GreetingServer extends BasicObject {
         public void run() {
             //Object myObject =null;
             Message myMessageHolder = null;
-            System.out.println("-----System Message Entering client handler");
+            System.out.println("-----*** in echoClientHandlerServer ***----- System Message Entering client handler");
+            
             try {
                 
                 ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -88,10 +91,10 @@ public class GreetingServer extends BasicObject {
                 while(true) {
                     try {
                         myMessageHolder= (Message)inFromClient.readObject();
-                        System.out.println("-----SYSTEM MESSAGE-RECIEVED A MESSAGE OBJECT----- " + myMessageHolder);
+                        System.out.println("-----*** in echoClientHandlerServer ***----------SYSTEM MESSAGE-RECIEVED A MESSAGE OBJECT----- " + myMessageHolder);
                         this.daMessage.add(myMessageHolder);
                         //alist.addLast((Message)myMessageHolder);
-                        System.out.println("-----System Message saved to local linked list");
+                        System.out.println("-----*** in echoClientHandlerServer ***----------System Message saved to local linked list");
                         //outToClient.writeObject();
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);

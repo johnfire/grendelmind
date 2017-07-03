@@ -21,7 +21,8 @@ public class GrendelDecider extends BasicObject {
     
     @Override
     public void run() {   
-    System.out.println("we are in the grendelDecider routine");
+    //System.out.println("we are in the grendelDecider routine");
+    this.systemMessageStartUp("Starting the Decider cell");
     //this.systemMessageStartUp("Grendel Decider is now starting");
  
         try {
