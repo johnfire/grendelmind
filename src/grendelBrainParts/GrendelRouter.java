@@ -77,17 +77,17 @@ public class GrendelRouter extends BasicObject {
       
         @Override
         public void run() {
-            System.out.println("----- test message----- entered processor run routine");
+            System.out.println(java.time.LocalTime.now() +" ----- test message----- entered processor run routine");
             while(true){
                 try {
                     Thread.sleep(150);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                System.out.println("the size of the unprocessed file is " + this.theLinkedLists.unProcessedMessages.size());
+                System.out.println(java.time.LocalTime.now() + "the size of the unprocessed file is " + this.theLinkedLists.unProcessedMessages.size());
                 
                 if (this.theLinkedLists.unProcessedMessages.size() > 0 ){
-                    System.out.println("-----test message ----- entering sort loop");
+                    System.out.println(java.time.LocalTime.now() + " -----test message ----- entering sort loop");
                     // read destination
                     messageInQueue = this.theLinkedLists.unProcessedMessages.removeFirst();
 
@@ -155,7 +155,9 @@ public class GrendelRouter extends BasicObject {
                         this.theLinkedLists.grendelGreetingServerMessages.addLast(messageInQueue);
                     default:
                         break;  
+                    
                     }  
+                    System.out.println(java.time.LocalTime.now() + "end of processing loop");
                 }  
             }
         }
