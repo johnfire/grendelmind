@@ -20,7 +20,6 @@ public class allLinkedLists {
      * then those 9 lists are added at some point to the main list.
      */
     
-    
     public LinkedList<Message> unProcessedMessages;
     public LinkedList<Message> internetMessages;
     public LinkedList<Message> outputMessages;
