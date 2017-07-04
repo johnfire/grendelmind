@@ -27,22 +27,25 @@ package grendelBrainParts;
 import basicstuff.*;
 import java.net.*;
 import java.io.*;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GreetingServer extends BasicObject {
     LinkedList<Message> aList = new LinkedList();
-    GrendelRouter theRouter = new GrendelRouter();
+    allLinkedLists theRouter = new allLinkedLists();
+
+    GreetingServer(allLinkedLists aThis, LinkedList<Message> unProcessedMessages) {
+        aList = unProcessedMessages;  
+       this.theRouter = aThis;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 //    GreetingServer(LinkedList<Message> unProcessedMessages) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 //    }
     
-    protected void GreetingServer(GrendelRouter myRouter,LinkedList thelist){
-       aList = thelist;  
-       this.theRouter =myRouter;
-    }
 
     private ServerSocket serverSocket;
    
@@ -56,7 +59,7 @@ public class GreetingServer extends BasicObject {
             serverSocket = new ServerSocket(5000);
             this.systemMessageStartUp("-----started the ServerSocket-----");
             while (true) {
-                new EchoClientHandler(serverSocket.accept(),aList).start();
+                new EchoClientHandler(serverSocket.accept(),aList, this.theRouter).start();
             }
         } catch (IOException e) {
             this.systemMessageError("failure at the echoClientServer startup");
@@ -67,7 +70,7 @@ public class GreetingServer extends BasicObject {
     public static class EchoClientHandler extends Thread {
         int myconnection = 0;
         boolean LockConnection = false;
-        
+        allLinkedLists myRouter;
         private final Socket clientSocket;
         
         public LinkedList<Message> daMessage;
@@ -75,10 +78,11 @@ public class GreetingServer extends BasicObject {
         
         //myOutputList = new LinkedList<>();
     
-        public EchoClientHandler(Socket socket,LinkedList<Message> mylist) {
+        public EchoClientHandler(Socket socket,LinkedList<Message> mylist,allLinkedLists aRouter) {
             this.clientSocket = socket;
             daMessage = mylist;
             this.myOutputList = new LinkedList();  
+            this.myRouter =aRouter;
         }
  
         @Override
@@ -107,7 +111,8 @@ public class GreetingServer extends BasicObject {
                         System.out.println("-----*** in echoClientHandlerServer ***----------SYSTEM MESSAGE-RECIEVED A MESSAGE OBJECT----- " + myMessageHolder);
                         
                         // need code here to loop and load up unprocessed message list 
-                        this.daMessage.add(myMessageHolder);
+                        //this.daMessage.add(myMessageHolder);
+                        this.myRouter.unProcessedMessages.addAll((Collection<? extends Message>) myMessageHolder);
                         
                         //done getting messages now  send messages
                         switch(this.myconnection){
@@ -116,22 +121,22 @@ public class GreetingServer extends BasicObject {
                             case 2:
                                 break;
                             case 3:
-                                //this.myOUtputList = visionList;
+                                this.myOutputList = this.myRouter.visionInMessages;
                                 break;
                             case 4:
-                                //this.myOutputLst = soundList;
+                                this.myOutputList = this.myRouter.soundInMessages;
                                 break;
                             case 5:
-                                //this.myOutputList = soundInList;
+                                this.myOutputList = this.myRouter.internetMessages;
                                 break;
                             case 6:
-                                //this.myOutputList = soundOutList;
+                                this.myOutputList = this.myRouter.outputMessages;
                                 break;
                             case 7:
-                                //this.myOutputlist = movementList;
+                                this.myOutputList = this.myRouter.outputMessages;
                                 break;
                             case 8:
-                                //this.myOutputList = internetList; 
+                                this.myOutputList = this.myRouter.internetMessages;
                                 break;
                             case 9:
                                 break;
