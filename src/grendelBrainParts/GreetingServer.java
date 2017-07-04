@@ -63,16 +63,20 @@ public class GreetingServer extends BasicObject {
         }
     }
     
+    /** this is the object that actually handles comm between server and a client.
+     * 
+     */
+    
     //this is supposed to be static
     public static class EchoClientHandler extends Thread {
         
         private int myconnection = 0;
         private boolean LockConnection = false;
-        allLinkedLists theLinkedListObject;
         private final Socket clientSocket;
-        LinkedList<Message> myOutputList;
+        allLinkedLists theLinkedListObject;
         Message firstMessage = new Message();
         Message testMessage = new Message();
+        LinkedList<Message> myOutputList;
         
         public EchoClientHandler(Socket socket,allLinkedLists aLLObj) {
             
@@ -99,6 +103,7 @@ public class GreetingServer extends BasicObject {
                     // test to see if lock connection neeeds to be set
                     if(LockConnection == false) {// lock this handler to the correct sender
                         this.myconnection = firstMessage.showOrigin();
+                        System.out.println("-----*** echoIndyServer just set my connection to " + this.myconnection);
                         LockConnection = true;
                     }
                 } catch (ClassNotFoundException ex) {
@@ -115,7 +120,7 @@ public class GreetingServer extends BasicObject {
                         while(inFromClient.available()>= 50){
                            myMessageHolder.add((Message)inFromClient.readObject());
                            this.theLinkedListObject.unProcessedMessages.removeAll(myMessageHolder);
-                           System.out.println("-----*** in echoClientHandlerServer ***----------SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT----- " + myMessageHolder);
+                           System.out.println("-----*** in echoClientHandlerServer (" + this.myconnection + ")***----------SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT----- ");
                         }
                         
                         //done getting messages now  send messages
@@ -172,7 +177,7 @@ public class GreetingServer extends BasicObject {
                         //this code sends out all messages to where they need to go.
                         while(myOutputList.isEmpty() != true) {
                             outToClient.writeObject(myOutputList.removeFirst());
-                            System.out.println("-----*** echo Server Sender***---  just sent message");
+                            System.out.println("-----*** echo Server Sender (" + this.myconnection +")***---  just sent message");
                         }  
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
