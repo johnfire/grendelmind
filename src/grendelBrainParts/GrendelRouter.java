@@ -7,6 +7,8 @@ package grendelBrainParts;
 
 import basicstuff.*;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,17 +18,16 @@ public class GrendelRouter extends BasicObject {
     
     int MyId = 101; 
     int port = 5000;
-    LinkedList<Message> dummyList = new LinkedList();
+    allLinkedLists myLinkedLists;
 
     public GrendelRouter(){
-        // constructor    
+        
+        // constructor   
+        myLinkedLists = new allLinkedLists();
     }
     
     @Override
     public void run() {
-        //create a server mem space
-        //GreetingServer myServer = null;
-        allLinkedLists myLinkedLists = new allLinkedLists();
         
         this.systemMessageStartUp("starting the router cell");
         
@@ -35,9 +36,9 @@ public class GrendelRouter extends BasicObject {
         Thread routerThread = new Thread(myStats);
         routerThread.start();
         
-        this.systemMessage("Just entered the Grendel Router routine");
-        //create server and run
+        this.systemMessage("Just completed the Grendel Router start stats routine");
         
+        //create server and run
         GreetingServer myServer;
         myServer = new GreetingServer(myLinkedLists);
         Thread theServerThread = new Thread(myServer);
@@ -45,7 +46,11 @@ public class GrendelRouter extends BasicObject {
         this.systemMessageStartUp("-----Started the router cell server thread-----");
         
         while(true) {
-            
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
+            }
             // check to see whats coming thru
             if (myLinkedLists.unProcessedMessages != null){
                 System.out.println(myLinkedLists.unProcessedMessages);

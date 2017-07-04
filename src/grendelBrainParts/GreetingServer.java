@@ -27,7 +27,6 @@ package grendelBrainParts;
 import basicstuff.*;
 import java.net.*;
 import java.io.*;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,9 +59,10 @@ public class GreetingServer extends BasicObject {
     public void run() {
         try {
             serverSocket = new ServerSocket(5000);
-            this.systemMessageStartUp("-----started the ServerSocket-----");
+            this.systemMessageStartUp("-----Greeting Server----- started the ServerSocket-----");
             while (true) {
                 new EchoClientHandler(serverSocket.accept(), this.theRouter).start();
+                this.systemMessageStartUp("-----Greeting Server----- started new echo server handler");
             }
         } catch (IOException e) {
             this.systemMessageError("failure at the echoClientServer startup");
@@ -71,22 +71,21 @@ public class GreetingServer extends BasicObject {
     
     //this is supposed to be static
     public static class EchoClientHandler extends Thread {
+        
         private int myconnection = 0;
         private boolean LockConnection = false;
-        allLinkedLists myRouter;
+        allLinkedLists theLinkedListObject;
         private final Socket clientSocket;
         LinkedList<Message> myOutputList;
         Message firstMessage = new Message();
-         
+        Message testMessage = new Message();
         
-        
-        public EchoClientHandler(Socket socket,allLinkedLists aRouter) {
+        public EchoClientHandler(Socket socket,allLinkedLists aLLObj) {
             
             this.clientSocket = socket; 
-            this.myRouter =aRouter;
+            this.theLinkedListObject =aLLObj;
             this.myOutputList = new LinkedList<>();
             
-
         }
  
         @Override
@@ -98,19 +97,21 @@ public class GreetingServer extends BasicObject {
                 
                 ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
                 ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
-             
-                String inputLine;
                 
                 try {
                     firstMessage = (Message)inFromClient.readObject();
+                    System.out.println("-----*** in echoserver ***----- address of first message is"+ firstMessage);
+                    this.theLinkedListObject.unProcessedMessages.add(firstMessage);
+                    // test to see if lock connection neeeds to be set
+                    if(LockConnection == false) {// lock this handler to the correct sender
+                        this.myconnection = firstMessage.showOrigin();
+                        LockConnection = true;
+                    }
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("-----*** echo server ***----- ERROR DID NOT GET FIRST MESSAGE!!!!!");
                 }
-                // test to see if lock connection neeeds to be set
-                        if(LockConnection == false) {// lock this handler to the correct sender
-                           this.myconnection = firstMessage.showOrigin();
-                           LockConnection = true;
-                        }
+               
                 // my name is set, now enter loop and send and receive messages
                 
                 while(true) {
@@ -118,9 +119,9 @@ public class GreetingServer extends BasicObject {
                         // read objects from input srtream as available
                         while(inFromClient.available()>= 50){
                            myMessageHolder.add((Message)inFromClient.readObject());
-                           this.myRouter.unProcessedMessages.removeAll(myMessageHolder);
+                           this.theLinkedListObject.unProcessedMessages.removeAll(myMessageHolder);
+                           System.out.println("-----*** in echoClientHandlerServer ***----------SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT----- " + myMessageHolder);
                         }
-                        System.out.println("-----*** in echoClientHandlerServer ***----------SYSTEM MESSAGES-RECIEVED A MESSAGE OBJECT----- " + myMessageHolder);
                         
                         //done getting messages now  send messages
                         switch(this.myconnection){
@@ -129,22 +130,22 @@ public class GreetingServer extends BasicObject {
                             case 2:
                                 break;
                             case 3:
-                                this.myOutputList = this.myRouter.visionInMessages;
+                                this.myOutputList = this.theLinkedListObject.visionInMessages;
                                 break;
                             case 4:
-                                this.myOutputList = this.myRouter.soundInMessages;
+                                this.myOutputList = this.theLinkedListObject.soundInMessages;
                                 break;
                             case 5:
-                                this.myOutputList = this.myRouter.internetMessages;
+                                this.myOutputList = this.theLinkedListObject.internetMessages;
                                 break;
                             case 6:
-                                this.myOutputList = this.myRouter.outputMessages;
+                                this.myOutputList = this.theLinkedListObject.outputMessages;
                                 break;
                             case 7:
-                                this.myOutputList = this.myRouter.outputMessages;
+                                this.myOutputList = this.theLinkedListObject.outputMessages;
                                 break;
                             case 8:
-                                this.myOutputList = this.myRouter.internetMessages;
+                                this.myOutputList = this.theLinkedListObject.internetMessages;
                                 break;
                             case 9:
                                 break;
@@ -173,10 +174,10 @@ public class GreetingServer extends BasicObject {
                                 break;      
                         }
                         
-                        System.out.println("-----*** in echoClientHandlerServer ***----------System Message saved to" + " local linked list");
                         //this code sends out all messages to where they need to go.
                         while(myOutputList.isEmpty() != true) {
                             outToClient.writeObject(myOutputList.removeFirst());
+                            System.out.println("-----*** echo Server Sender***---  just sent message");
                         }  
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
