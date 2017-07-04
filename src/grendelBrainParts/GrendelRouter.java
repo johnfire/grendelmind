@@ -6,7 +6,6 @@
 package grendelBrainParts;
 
 import basicstuff.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -19,12 +18,8 @@ public class GrendelRouter extends BasicObject {
     int port = 5000;
     LinkedList<Message> dummyList = new LinkedList();
 
-    /**
-     *Set up a blank linked list for use by processor
-     */
     public GrendelRouter(){
-        
-        
+        // constructor    
     }
     
     @Override
@@ -32,6 +27,7 @@ public class GrendelRouter extends BasicObject {
         //create a server mem space
         //GreetingServer myServer = null;
         allLinkedLists myLinkedLists = new allLinkedLists();
+        
         this.systemMessageStartUp("starting the router cell");
         
         ObjectStatus myStats = new basicstuff.ObjectStatus();
@@ -43,15 +39,13 @@ public class GrendelRouter extends BasicObject {
         //create server and run
         
         GreetingServer myServer;
-        myServer = new GreetingServer(myLinkedLists, this.dummyList);
+        myServer = new GreetingServer(myLinkedLists);
         Thread theServerThread = new Thread(myServer);
         theServerThread.start();
         this.systemMessageStartUp("-----Started the router cell server thread-----");
         
         while(true) {
-            // add messages
-            myLinkedLists.unProcessedMessages.addAll(myServer.aList);
-            myServer.aList.clear();
+            
             // check to see whats coming thru
             if (myLinkedLists.unProcessedMessages != null){
                 System.out.println(myLinkedLists.unProcessedMessages);
@@ -61,52 +55,56 @@ public class GrendelRouter extends BasicObject {
     }
     
     public class processor extends Thread {
-        LinkedList<Message> theList;
-        LinkedList<Message> myoutlist;
-        
+        allLinkedLists theLinkedLists;
+        Message messageInQueue;
         //you have to pass all the linked lists for delivery to this function as it handles 
         // all of the sorting into the various out lists used by the various 
         public void processor(LinkedList<Message> unworkedList, LinkedList<Message> internetList) {
-            theList = unworkedList;
-            myoutlist = internetList;
+            theLinkedLists = new allLinkedLists();
         }
         
         @Override
         public void run() {
             
-            int listSize = theList.size();
-            Message messageInQueue = new Message();
-            //messageNumberInQueue = 0;
-            long destination;
-            
-            // for each message :
-            while(theList.isEmpty()!= true){
+            while(theLinkedLists.unProcessedMessages.isEmpty()!= true){
                 // read destination
-                messageInQueue = theList.removeFirst();
-                destination = getDestination(messageInQueue);
-                int y =(int) destination;
+                messageInQueue = this.theLinkedLists.unProcessedMessages.removeFirst();
+
                 //if messege is going to device on internet:
                 //place in queue for that destination
                 // otherwise send directly to decider or analyzer
-                switch (y){
+                switch (messageInQueue.showDestination(0)){
                     case 0:
                         break;
                     case 1:
                         break;
                     case 2:
+                        this.theLinkedLists.visionInMessages.addLast(messageInQueue);
+                        this.theLinkedLists.soundInMessages.addLast(messageInQueue);
+                        this.theLinkedLists.internetMessages.addLast(messageInQueue);
+                        this.theLinkedLists.outputMessages.addLast(messageInQueue);
+                        this.theLinkedLists.grendelDeciderMessages.addLast(messageInQueue);
+                        this.theLinkedLists.grendelRouterMessages.addLast(messageInQueue);
+                        this.theLinkedLists.grendelGreetingServerMessages.addLast(messageInQueue);
+                        this.theLinkedLists.greetingClientMessages.addLast(messageInQueue);
                         break;
                     case 3:
+                        this.theLinkedLists.visionInMessages.addLast(messageInQueue);
                         break;
                     case 4:
+                        this.theLinkedLists.soundInMessages.addLast(messageInQueue);
                         break;
                     case 5:
+                        this.theLinkedLists.internetMessages.addLast(messageInQueue);
                         break;
                     case 6:
+                        this.theLinkedLists.outputMessages.addLast(messageInQueue);
                         break;
                     case 7:
+                        this.theLinkedLists.outputMessages.addLast(messageInQueue);
                         break;
                     case 8: // interent interface
-                       // myoutlist.addLast(internetInterface, messageInQueue);
+                       this.theLinkedLists.internetMessages.addLast(messageInQueue);
                         break;
                     case 9:
                         break;
@@ -122,24 +120,22 @@ public class GrendelRouter extends BasicObject {
                         break;
                     case 15:
                         break;
+                    case 20:
+                        this.theLinkedLists.greetingClientMessages.addLast(messageInQueue);
+                        break;
                     case 100:
+                        this.theLinkedLists.grendelDeciderMessages.addLast(messageInQueue);
                         break;
                     case 101: 
+                        this.theLinkedLists.grendelRouterMessages.addLast(messageInQueue);
                         break;
+                    case 102:
+                        this.theLinkedLists.grendelGreetingServerMessages.addLast(messageInQueue);
                     default:
                         break;  
                 }  
             }
         }
-        
-        private long getDestination(Message msgNr){
-           int destination =0;
-            destination = msgNr.showDestination(destination);
-            // do the work here. 
-            
-            return destination;
-        }
-    }
-    
+    }   
 }
 

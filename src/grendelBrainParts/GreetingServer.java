@@ -33,11 +33,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GreetingServer extends BasicObject {
-    LinkedList<Message> aList = new LinkedList();
+
     allLinkedLists theRouter = new allLinkedLists();
 
-    GreetingServer(allLinkedLists aThis, LinkedList<Message> unProcessedMessages) {
-        aList = unProcessedMessages;  
+    GreetingServer(allLinkedLists aThis) {
        this.theRouter = aThis;
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -48,6 +47,10 @@ public class GreetingServer extends BasicObject {
     
 
     private ServerSocket serverSocket;
+
+    GreetingServer(allLinkedLists myLinkedLists) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
    
     /**
      *
@@ -59,7 +62,7 @@ public class GreetingServer extends BasicObject {
             serverSocket = new ServerSocket(5000);
             this.systemMessageStartUp("-----started the ServerSocket-----");
             while (true) {
-                new EchoClientHandler(serverSocket.accept(),aList, this.theRouter).start();
+                new EchoClientHandler(serverSocket.accept(), this.theRouter).start();
             }
         } catch (IOException e) {
             this.systemMessageError("failure at the echoClientServer startup");
@@ -68,26 +71,27 @@ public class GreetingServer extends BasicObject {
     
     //this is supposed to be static
     public static class EchoClientHandler extends Thread {
-        int myconnection = 0;
-        boolean LockConnection = false;
+        private int myconnection = 0;
+        private boolean LockConnection = false;
         allLinkedLists myRouter;
         private final Socket clientSocket;
+        LinkedList<Message> myOutputList;
+        Message firstMessage = new Message();
+         
         
-        public LinkedList<Message> daMessage;
-        public LinkedList<Message> myOutputList;
         
-        //myOutputList = new LinkedList<>();
-    
-        public EchoClientHandler(Socket socket,LinkedList<Message> mylist,allLinkedLists aRouter) {
-            this.clientSocket = socket;
-            daMessage = mylist;
-            this.myOutputList = new LinkedList();  
+        public EchoClientHandler(Socket socket,allLinkedLists aRouter) {
+            
+            this.clientSocket = socket; 
             this.myRouter =aRouter;
+            this.myOutputList = new LinkedList<>();
+            
+
         }
  
         @Override
         public void run() {
-            Message myMessageHolder = null;
+            LinkedList<Message> myMessageHolder = new LinkedList();
             System.out.println("-----*** in echoClientHandlerServer ***----- System Message Entering client handler");
             
             try {
@@ -96,23 +100,27 @@ public class GreetingServer extends BasicObject {
                 ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
              
                 String inputLine;
+                
+                try {
+                    firstMessage = (Message)inFromClient.readObject();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                // test to see if lock connection neeeds to be set
+                        if(LockConnection == false) {// lock this handler to the correct sender
+                           this.myconnection = firstMessage.showOrigin();
+                           LockConnection = true;
+                        }
+                // my name is set, now enter loop and send and receive messages
+                
                 while(true) {
                     try {
                         // read objects from input srtream as available
                         while(inFromClient.available()>= 50){
-                           myMessageHolder = (Message)inFromClient.readObject();
+                           myMessageHolder.add((Message)inFromClient.readObject());
+                           this.myRouter.unProcessedMessages.removeAll(myMessageHolder);
                         }
-                        // test to see if lock connection neeeds to be set
-                        if(LockConnection == false) {// lock this handler to the correct sender
-                           this.myconnection = (int) myMessageHolder.showOrigin();
-                           LockConnection = true;
-                        }
-                        
-                        System.out.println("-----*** in echoClientHandlerServer ***----------SYSTEM MESSAGE-RECIEVED A MESSAGE OBJECT----- " + myMessageHolder);
-                        
-                        // need code here to loop and load up unprocessed message list 
-                        //this.daMessage.add(myMessageHolder);
-                        this.myRouter.unProcessedMessages.addAll((Collection<? extends Message>) myMessageHolder);
+                        System.out.println("-----*** in echoClientHandlerServer ***----------SYSTEM MESSAGES-RECIEVED A MESSAGE OBJECT----- " + myMessageHolder);
                         
                         //done getting messages now  send messages
                         switch(this.myconnection){
@@ -153,7 +161,11 @@ public class GreetingServer extends BasicObject {
                             case 15:
                                 //thismyOutputList = outputList;
                                 break;
+                            case 20:
+                                break;
                             case 100:
+                                break;
+                            case 101:
                                 break;
                             case 102:
                                 break;
