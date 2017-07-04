@@ -87,6 +87,7 @@ public class GreetingServer extends BasicObject {
         }
  
         @Override
+        @SuppressWarnings("empty-statement")
         public void run() {
             LinkedList<Message> myMessageHolder = new LinkedList();
             System.out.println("-----*** in echoIndyServer ***----- System Message Entering client handler");
@@ -98,6 +99,7 @@ public class GreetingServer extends BasicObject {
                 
                 try {
                     firstMessage = (Message)inFromClient.readObject();
+                    inFromClient.reset();
                     System.out.println("-----*** in echoIndyServer ***----- address of first message is"+ firstMessage);
                     this.theLinkedListObject.unProcessedMessages.add(firstMessage);
                     // test to see if lock connection neeeds to be set
@@ -114,14 +116,19 @@ public class GreetingServer extends BasicObject {
                 // my name is set, now enter loop and send and receive messages
                 
                 while(true) {
-                    //System.out.println("-----*** in echoIndyServer ***----- starting echo server loop");
+                    System.out.println("-----*** in echoIndyServer ***----- starting echo server loop");
                     try {
+                        int x =1;
                         // read objects from input srtream as available
-                        while(inFromClient.available()>= 50){
-                           myMessageHolder.add((Message)inFromClient.readObject());
-                           this.theLinkedListObject.unProcessedMessages.removeAll(myMessageHolder);
+                        
+                        while(inFromClient.available() != 0);
+                        {
+                           
+                           this.testMessage = (Message) inFromClient.readObject();
+                           this.theLinkedListObject.unProcessedMessages.addLast(this.testMessage);
                            System.out.println("-----*** in echoClientHandlerServer (" + this.myconnection + ")***----------SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT----- ");
                         }
+                        //this.theLinkedListObject.unProcessedMessages.removeAll(myMessageHolder);
                         
                         //done getting messages now  send messages
                         switch(this.myconnection){
@@ -160,9 +167,9 @@ public class GreetingServer extends BasicObject {
                             case 14:
                                 break;
                             case 15:
-                                //thismyOutputList = outputList;
                                 break;
                             case 20:
+                                this.myOutputList = this.theLinkedListObject.greetingClientMessages;
                                 break;
                             case 100:
                                 break;
