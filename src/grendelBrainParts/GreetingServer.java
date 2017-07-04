@@ -94,24 +94,19 @@ public class GreetingServer extends BasicObject {
             
             try {
                 
-                ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
-                ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
                 
-                try {
-                    firstMessage = (Message)inFromClient.readObject();
-                    inFromClient.reset();
-                    System.out.println("-----*** in echoIndyServer ***----- address of first message is"+ firstMessage);
-                    this.theLinkedListObject.unProcessedMessages.add(firstMessage);
-                    // test to see if lock connection neeeds to be set
-                    if(LockConnection == false) {// lock this handler to the correct sender
-                        this.myconnection = firstMessage.showOrigin();
-                        System.out.println("-----*** echoIndyServer just set my connection to " + this.myconnection);
-                        LockConnection = true;
-                    }
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
-                    System.out.println("-----*** in echoIndyServer ***----- ERROR DID NOT GET FIRST MESSAGE!!!!!");
-                }
+                
+//                try {
+//                    firstMessage = (Message)inFromClient.readObject();
+//                    inFromClient.reset();
+//                    System.out.println("-----*** in echoIndyServer ***----- address of first message is"+ firstMessage);
+//                    this.theLinkedListObject.unProcessedMessages.add(firstMessage);
+//                    // test to see if lock connection neeeds to be set
+//                    
+//                } catch (ClassNotFoundException ex) {
+//                    Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
+//                    System.out.println("-----*** in echoIndyServer ***----- ERROR DID NOT GET FIRST MESSAGE!!!!!");
+//                }
                
                 // my name is set, now enter loop and send and receive messages
                 
@@ -120,13 +115,22 @@ public class GreetingServer extends BasicObject {
                     try {
                         int x =1;
                         // read objects from input srtream as available
-                        
-                        while(inFromClient.available() != 0);
-                        {
-                           
-                           this.testMessage = (Message) inFromClient.readObject();
+                        boolean anObject;
+                        ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+                        ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
+                        try {
+                            
+                            this.testMessage = (Message) inFromClient.readObject();
+                            
+                            if(LockConnection == false) {// lock this handler to the correct sender
+                                this.myconnection = firstMessage.showOrigin();
+                                System.out.println("-----*** echoIndyServer just set my connection to " + this.myconnection);
+                                LockConnection = true;
+                            }
                            this.theLinkedListObject.unProcessedMessages.addLast(this.testMessage);
                            System.out.println("-----*** in echoClientHandlerServer (" + this.myconnection + ")***----------SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT----- ");
+                        }catch (IOException e){
+                         inFromClient.close();
                         }
                         //this.theLinkedListObject.unProcessedMessages.removeAll(myMessageHolder);
                         
@@ -182,10 +186,12 @@ public class GreetingServer extends BasicObject {
                         }
                         
                         //this code sends out all messages to where they need to go.
-                        while(myOutputList.isEmpty() != true) {
+                        while (myOutputList.isEmpty() != true) try{
                             outToClient.writeObject(myOutputList.removeFirst());
                             System.out.println("-----*** echo Server Sender (" + this.myconnection +")***---  just sent message");
-                        }  
+                        }  catch (IOException ex){
+                           outToClient.close();
+                        }
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
                     }   
