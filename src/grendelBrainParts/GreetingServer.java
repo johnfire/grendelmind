@@ -38,7 +38,7 @@ public class GreetingServer extends BasicObject {
 
     GreetingServer(allLinkedLists aThis) {
        this.theRouter = aThis;
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 //    GreetingServer(LinkedList<Message> unProcessedMessages) {
@@ -48,9 +48,9 @@ public class GreetingServer extends BasicObject {
 
     private ServerSocket serverSocket;
 
-    GreetingServer(allLinkedLists myLinkedLists) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    GreetingServer(allLinkedLists myLinkedLists) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
    
     /**
      *
