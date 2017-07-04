@@ -53,13 +53,13 @@ public class GreetingServer extends BasicObject {
     public void run() {
         try {
             serverSocket = new ServerSocket(5000);
-            this.systemMessageStartUp("-----Greeting Server----- started the ServerSocket-----");
+            this.systemMessageStartUp(java.time.LocalTime.now() + "-----Greeting Server----- started the ServerSocket-----");
             while (true) {
                 new EchoClientHandler(serverSocket.accept(), this.thelinkedListObject).start();
-                this.systemMessageStartUp("-----Greeting Server----- started new echo server handler");
+                this.systemMessageStartUp(java.time.LocalTime.now() + "-----Greeting Server----- started new echo server handler");
             }
         } catch (IOException e) {
-            this.systemMessageError("failure at the echoClientServer startup");
+            this.systemMessageError(java.time.LocalTime.now() + "failure at the echoClientServer startup");
         }
     }
     
@@ -90,7 +90,7 @@ public class GreetingServer extends BasicObject {
         @SuppressWarnings("empty-statement")
         public void run() {
             LinkedList<Message> myMessageHolder = new LinkedList();
-            System.out.println("-----*** in echoIndyServer ***----- System Message Entering client handler");
+            System.out.println(java.time.LocalTime.now() + "-----*** in echoIndyServer ***----- System Message Entering client handler");
             
             try {
                 
@@ -111,7 +111,7 @@ public class GreetingServer extends BasicObject {
                 // my name is set, now enter loop and send and receive messages
                 
                 while(true) {
-                    System.out.println("-----*** in echoIndyServer ***----- starting echo server loop");
+                    System.out.println(java.time.LocalTime.now() + "-----*** in echoIndyServer ***----- starting echo server loop");
                     try {
                         int x =1;
                         // read objects from input srtream as available
@@ -123,12 +123,12 @@ public class GreetingServer extends BasicObject {
                             this.testMessage = (Message) inFromClient.readObject();
                             
                             if(LockConnection == false) {// lock this handler to the correct sender
-                                this.myconnection = firstMessage.showOrigin();
-                                System.out.println("-----*** echoIndyServer just set my connection to " + this.myconnection);
+                                this.myconnection = this.testMessage.showOrigin();
+                                System.out.println(java.time.LocalTime.now() + "-----*** echoIndyServer just set my connection to " + this.myconnection);
                                 LockConnection = true;
                             }
                            this.theLinkedListObject.unProcessedMessages.addLast(this.testMessage);
-                           System.out.println("-----*** in echoClientHandlerServer (" + this.myconnection + ")***----------SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT----- ");
+                           System.out.println(java.time.LocalTime.now() + "-----*** in echoClientHandlerServer (" + this.myconnection + ")***----------SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT----- ");
                         }catch (IOException e){
                          inFromClient.close();
                         }
@@ -188,7 +188,7 @@ public class GreetingServer extends BasicObject {
                         //this code sends out all messages to where they need to go.
                         while (myOutputList.isEmpty() != true) try{
                             outToClient.writeObject(myOutputList.removeFirst());
-                            System.out.println("-----*** echo Server Sender (" + this.myconnection +")***---  just sent message");
+                            System.out.println(java.time.LocalTime.now() + "-----*** echo Server Sender (" + this.myconnection +")***---  just sent message");
                         }  catch (IOException ex){
                            outToClient.close();
                         }
