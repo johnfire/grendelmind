@@ -33,13 +33,15 @@ import java.util.logging.Logger;
 
 public class GreetingServer extends BasicObject {
     LinkedList<Message> aList = new LinkedList();
+    GrendelRouter theRouter = new GrendelRouter();
     
 //    GreetingServer(LinkedList<Message> unProcessedMessages) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 //    }
     
-    protected void GreetingServer(LinkedList<Message> thelist){
+    protected void GreetingServer(GrendelRouter myRouter,LinkedList thelist){
        aList = thelist;  
+       this.theRouter =myRouter;
     }
 
     private ServerSocket serverSocket;
