@@ -17,35 +17,21 @@ public class GrendelRouter extends BasicObject {
     
     int MyId = 101; 
     int port = 5000;
+    LinkedList<Message> dummyList = new LinkedList();
 
     /**
      *Set up a blank linked list for use by processor
      */
-    public LinkedList<Message> unProcessedMessages;
-    public LinkedList<Message> internetMessages;
-    public LinkedList<Message> outputMessages;
-    public LinkedList<Message> soundInMessages;
-    public LinkedList<Message> VisionInMessages;
-    public LinkedList<Message> greetingClientMessages;
-    public LinkedList<Message> grendelDeciderMessages;
-    public LinkedList<Message> grendelRouterMessages;
-    public LinkedList<Message> grendelGreetingServerMessages;
-    
-    public GrendelRouter() {
-        this.unProcessedMessages = new LinkedList();
-        this.internetMessages = new LinkedList();   
+    public GrendelRouter(){
         
-        ArrayList<LinkedList<Message>> bigList;
-        bigList = new ArrayList<>();
-        bigList.add(this.unProcessedMessages);
-        bigList.add(this.internetMessages);
-
+        
     }
     
     @Override
     public void run() {
         //create a server mem space
         //GreetingServer myServer = null;
+        allLinkedLists myLinkedLists = new allLinkedLists();
         this.systemMessageStartUp("starting the router cell");
         
         ObjectStatus myStats = new basicstuff.ObjectStatus();
@@ -57,18 +43,18 @@ public class GrendelRouter extends BasicObject {
         //create server and run
         
         GreetingServer myServer;
-        myServer = new GreetingServer();
+        myServer = new GreetingServer(myLinkedLists, this.dummyList);
         Thread theServerThread = new Thread(myServer);
         theServerThread.start();
         this.systemMessageStartUp("-----Started the router cell server thread-----");
         
         while(true) {
             // add messages
-            unProcessedMessages.addAll(myServer.aList);
+            myLinkedLists.unProcessedMessages.addAll(myServer.aList);
             myServer.aList.clear();
             // check to see whats coming thru
-            if (this.unProcessedMessages != null){
-                System.out.println(this.unProcessedMessages);
+            if (myLinkedLists.unProcessedMessages != null){
+                System.out.println(myLinkedLists.unProcessedMessages);
             }
             // more process code goes here
         }
@@ -147,11 +133,13 @@ public class GrendelRouter extends BasicObject {
         }
         
         private long getDestination(Message msgNr){
-           long destination =0;
+           int destination =0;
             destination = msgNr.showDestination(destination);
             // do the work here. 
             
             return destination;
         }
     }
+    
 }
+
