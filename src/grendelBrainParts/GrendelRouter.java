@@ -56,9 +56,11 @@ public class GrendelRouter extends BasicObject {
             }
             // check to see whats coming thru
             if (myLinkedLists.unProcessedMessages != null){
-                System.out.println(myLinkedLists.unProcessedMessages);
+                System.out.println(myLinkedLists.unProcessedMessages + "thes are addresses of the messages in unprocessed lists.");
+                System.out.println(this.myLinkedLists.grendelRouterMessages + "these are addreses of messages in router list");
             }
             // more process code goes here
+            
         }
     }
     
@@ -75,15 +77,24 @@ public class GrendelRouter extends BasicObject {
       
         @Override
         public void run() {
-            
-            while(theLinkedLists.unProcessedMessages.isEmpty()!= true){
-                // read destination
-                messageInQueue = this.theLinkedLists.unProcessedMessages.removeFirst();
+            System.out.println("----- test message----- entered processor run routine");
+            while(true){
+                try {
+                    Thread.sleep(150);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("the size of the unprocessed file is " + this.theLinkedLists.unProcessedMessages.size());
+                
+                if (this.theLinkedLists.unProcessedMessages.size() > 0 ){
+                    System.out.println("-----test message ----- entering sort loop");
+                    // read destination
+                    messageInQueue = this.theLinkedLists.unProcessedMessages.removeFirst();
 
-                //if messege is going to device on internet:
-                //place in queue for that destination
-                // otherwise send directly to decider or analyzer
-                switch (messageInQueue.showDestination(0)){
+                    //if messege is going to device on internet:
+                    //place in queue for that destination
+                    // otherwise send directly to decider or analyzer
+                    switch (messageInQueue.showDestination(0)){
                     case 0:
                         break;
                     case 1:
@@ -135,6 +146,7 @@ public class GrendelRouter extends BasicObject {
                         break;
                     case 100:
                         this.theLinkedLists.grendelDeciderMessages.addLast(messageInQueue);
+                        System.out.println("added something to router message list");
                         break;
                     case 101: 
                         this.theLinkedLists.grendelRouterMessages.addLast(messageInQueue);
@@ -143,6 +155,7 @@ public class GrendelRouter extends BasicObject {
                         this.theLinkedLists.grendelGreetingServerMessages.addLast(messageInQueue);
                     default:
                         break;  
+                    }  
                 }  
             }
         }

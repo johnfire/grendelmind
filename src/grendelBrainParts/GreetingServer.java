@@ -128,6 +128,7 @@ public class GreetingServer extends BasicObject {
                                 LockConnection = true;
                             }
                            this.theLinkedListObject.unProcessedMessages.addLast(this.testMessage);
+                           System.out.print(this.theLinkedListObject.unProcessedMessages.size() + "size of unprocessed list");
                            System.out.println(java.time.LocalTime.now() + "-----*** in echoClientHandlerServer (" + this.myconnection + ")***----------SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT----- ");
                         }catch (IOException e){
                          inFromClient.close();
