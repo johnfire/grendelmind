@@ -40,9 +40,13 @@ public class GrendelRouter extends BasicObject {
         
         //create server and run
         GreetingServer myServer;
+        Processor myProcessor;
+        myProcessor = new Processor(myLinkedLists);
         myServer = new GreetingServer(myLinkedLists);
         Thread theServerThread = new Thread(myServer);
+        Thread theProcessorThread = new Thread(myProcessor);
         theServerThread.start();
+        theProcessorThread.start();
         this.systemMessageStartUp("-----Started the router cell server thread-----");
         
         while(true) {
@@ -59,15 +63,17 @@ public class GrendelRouter extends BasicObject {
         }
     }
     
-    public class processor extends Thread {
+    public class Processor extends Thread {
         allLinkedLists theLinkedLists;
         Message messageInQueue;
+
+        private Processor(allLinkedLists myLLObject) {
+            this.theLinkedLists = new allLinkedLists();
+            this.theLinkedLists = myLLObject;
+        }
         //you have to pass all the linked lists for delivery to this function as it handles 
         // all of the sorting into the various out lists used by the various 
-        public void processor(LinkedList<Message> unworkedList, LinkedList<Message> internetList) {
-            theLinkedLists = new allLinkedLists();
-        }
-        
+      
         @Override
         public void run() {
             

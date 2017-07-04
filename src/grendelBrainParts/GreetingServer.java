@@ -109,6 +109,7 @@ public class GreetingServer extends BasicObject {
                 // my name is set, now enter loop and send and receive messages
                 
                 while(true) {
+                    //System.out.println("-----*** in echoIndyServer ***----- starting echo server loop");
                     try {
                         // read objects from input srtream as available
                         while(inFromClient.available()>= 50){
