@@ -119,7 +119,7 @@ public class GreetingServer extends BasicObject {
                         //this.theLinkedListObject.unProcessedMessages.removeAll(myMessageHolder);
                         
                         //done getting messages now  send messages
-                        switch(this.myconnection){
+                        switch(this.testMessage.showDestination()){
                             case 1:
                                 break;
                             case 2:
@@ -172,7 +172,7 @@ public class GreetingServer extends BasicObject {
                         //this code sends out all messages to where they need to go.
                         while (myOutputList.isEmpty() != true) try{
                             outToClient.writeObject(myOutputList.removeFirst());
-                            System.out.println(java.time.LocalTime.now() + "-----*** echo Server Sender (" + this.myconnection + ")***-#-#-#-#-#- Just sent message");
+                            System.out.println(java.time.LocalTime.now() + "-----*** echo Server Sender (" + this.myconnection + ")***-#-#-#-#-#- SENDING MESSAGE FROM ROUTER SOMEWHERE Just sent message");
                         }  catch (IOException ex){
                            outToClient.close();
                         }
