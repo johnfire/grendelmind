@@ -69,13 +69,13 @@ public class GreetingServer extends BasicObject {
     
     //this is supposed to be static
     public static class EchoClientHandler extends Thread {
-        
+        int[] intAry = {1,2,3};
         private int myconnection = 0;
         private boolean LockConnection = false;
         private final Socket clientSocket;
         allLinkedLists theLinkedListObject;
-        Message firstMessage = new Message();
-        Message testMessage = new Message();
+        Message firstMessage = new Message(0,0,0,0,intAry,"");
+        Message testMessage = new Message(0,0,0,0,intAry,"");
         LinkedList<Message> myOutputList;
         
         public EchoClientHandler(Socket socket,allLinkedLists aLLObj) {
