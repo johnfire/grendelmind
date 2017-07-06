@@ -24,7 +24,7 @@ public class GrendelDecider extends BasicObject {
         myStats.setMyName("grendelDecider");
         Thread deciderThread = new Thread(myStats);
         deciderThread.start();
-       this.systemMessageStartUp("started grendel decider cell");
+        this.systemMessageStartUp("Grendel Decider cell is up and running");
     }
 }
 
