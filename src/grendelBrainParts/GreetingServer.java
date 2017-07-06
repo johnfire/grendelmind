@@ -119,7 +119,7 @@ public class GreetingServer extends BasicObject {
                         //this.theLinkedListObject.unProcessedMessages.removeAll(myMessageHolder);
                         
                         //done getting messages now  send messages
-                        switch(this.testMessage.showDestination()){
+                        switch(this.myconnection){
                             case 1:
                                 break;
                             case 2:
