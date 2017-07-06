@@ -53,13 +53,13 @@ public class GreetingServer extends BasicObject {
     public void run() {
         try {
             serverSocket = new ServerSocket(5000);
-            this.systemMessageStartUp(java.time.LocalTime.now() + "-----Greeting Server----- started the ServerSocket-----");
+            this.systemMessageStartUp(java.time.LocalTime.now() + "-----Greeting Server----- Started the ServerSocket-----");
             while (true) {
                 new EchoClientHandler(serverSocket.accept(), this.thelinkedListObject).start();
-                this.systemMessageStartUp(java.time.LocalTime.now() + "-----Greeting Server----- started new echo server handler");
+                this.systemMessageStartUp(java.time.LocalTime.now() + "-----Greeting Server----- Started new echo server handler");
             }
         } catch (IOException e) {
-            this.systemMessageError(java.time.LocalTime.now() + "failure at the echoClientServer startup");
+            this.systemMessageError(java.time.LocalTime.now() + "Failure at the echoClientServer startup");
         }
     }
     
@@ -111,7 +111,7 @@ public class GreetingServer extends BasicObject {
                 // my name is set, now enter loop and send and receive messages
                 
                 while(true) {
-                    System.out.println(java.time.LocalTime.now() + "-----*** in echoIndyServer ***----- starting echo server loop");
+                    System.out.println(java.time.LocalTime.now() + "-----*** in echoIndyServer ***----- Starting echo server loop");
                     try {
                         int x =1;
                         // read objects from input srtream as available
@@ -124,14 +124,14 @@ public class GreetingServer extends BasicObject {
                             
                             if(LockConnection == false) {// lock this handler to the correct sender
                                 this.myconnection = this.testMessage.showOrigin();
-                                System.out.println(java.time.LocalTime.now() + "-----*** echoIndyServer just set my connection to " + this.myconnection);
+                                System.out.println(java.time.LocalTime.now() + " -----*** in echoIndyServer ***----- Just set my connection to " + this.myconnection);
                                 LockConnection = true;
                             }
-                           this.theLinkedListObject.unProcessedMessages.addLast(this.testMessage);
-                           System.out.print(this.theLinkedListObject.unProcessedMessages.size() + "size of unprocessed list");
-                           System.out.println(java.time.LocalTime.now() + "-----*** in echoClientHandlerServer (" + this.myconnection + ")***----------SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT----- ");
+                            this.theLinkedListObject.unProcessedMessages.addLast(this.testMessage);
+                            System.out.print(this.theLinkedListObject.unProcessedMessages.size() + "size of unprocessed list");
+                            System.out.println(java.time.LocalTime.now() + " -----*** in echoClientHandlerServer (" + this.myconnection + ")***-*-*-*-*-SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT----- " + this.testMessage.showID());
                         }catch (IOException e){
-                         inFromClient.close();
+                            inFromClient.close();
                         }
                         //this.theLinkedListObject.unProcessedMessages.removeAll(myMessageHolder);
                         
@@ -189,7 +189,7 @@ public class GreetingServer extends BasicObject {
                         //this code sends out all messages to where they need to go.
                         while (myOutputList.isEmpty() != true) try{
                             outToClient.writeObject(myOutputList.removeFirst());
-                            System.out.println(java.time.LocalTime.now() + "-----*** echo Server Sender (" + this.myconnection +")***---  just sent message");
+                            System.out.println(java.time.LocalTime.now() + "-----*** echo Server Sender (" + this.myconnection + ")***-#-#-#-#-#- Just sent message");
                         }  catch (IOException ex){
                            outToClient.close();
                         }
