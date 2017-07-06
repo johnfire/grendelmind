@@ -58,7 +58,7 @@ public class GrendelRouter extends BasicObject {
             if(myLinkedLists.unProcessedMessages != null){
                 System.out.println(this.myLinkedLists.unProcessedMessages + " These are addresses of the messages in unprocessed list.");
                 System.out.println(this.myLinkedLists.grendelRouterMessages + " These are addreses of messages in router list");
-                System.out.println(this.myLinkedLists.outputMessages + " these are the addresses of output list messages");
+                System.out.println(this.myLinkedLists.outputMessages + " these are the addresses of output list messages\n");
             }
             // more process code goes here
             
