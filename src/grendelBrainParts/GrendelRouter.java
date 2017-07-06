@@ -28,7 +28,7 @@ public class GrendelRouter extends BasicObject {
     @Override
     public void run() {
         
-        this.systemMessageStartUp("starting the router cell");
+        this.systemMessageStartUp("Starting the grendel Router cell");
         
         ObjectStatus myStats = new basicstuff.ObjectStatus();
         myStats.setMyName("grendelRouter");
@@ -46,7 +46,7 @@ public class GrendelRouter extends BasicObject {
         Thread theProcessorThread = new Thread(myProcessor);
         theServerThread.start();
         theProcessorThread.start();
-        this.systemMessageStartUp("-----Started the router cell server thread-----");
+        this.systemMessageStartUp("----- Started the Grendel Router cell server thread-----");
         
         while(true) {
             try {
@@ -56,8 +56,8 @@ public class GrendelRouter extends BasicObject {
             }
             // check to see whats coming thru
             if (myLinkedLists.unProcessedMessages != null){
-                System.out.println(myLinkedLists.unProcessedMessages + "thes are addresses of the messages in unprocessed lists.");
-                System.out.println(this.myLinkedLists.grendelRouterMessages + "these are addreses of messages in router list");
+                System.out.println(myLinkedLists.unProcessedMessages + " These are addresses of the messages in unprocessed list.");
+                System.out.println(this.myLinkedLists.grendelRouterMessages + " These are addreses of messages in router list");
             }
             // more process code goes here
             
@@ -77,7 +77,7 @@ public class GrendelRouter extends BasicObject {
       
         @Override
         public void run() {
-            System.out.println(java.time.LocalTime.now() +" ----- test message----- entered processor run routine");
+            System.out.println(java.time.LocalTime.now() +" ----- Test Message----- Entered Processor run routine");
             while(true){
 //                try {
 //                    Thread.sleep(150);
@@ -87,7 +87,7 @@ public class GrendelRouter extends BasicObject {
                 //System.out.println(java.time.LocalTime.now() + "the size of the unprocessed file is " + this.theLinkedLists.unProcessedMessages.size());
                 
                 if (this.theLinkedLists.unProcessedMessages.size() > 0 ){
-                    System.out.println(java.time.LocalTime.now() + " -----test message ----- entering sort loop");
+                    System.out.println(java.time.LocalTime.now() + " -----Test Message ----- Entering sort loop");
                     // read destination
                     messageInQueue = this.theLinkedLists.unProcessedMessages.removeFirst();
 
@@ -146,7 +146,7 @@ public class GrendelRouter extends BasicObject {
                         break;
                     case 100:
                         this.theLinkedLists.grendelDeciderMessages.addLast(messageInQueue);
-                        System.out.println("added something to router message list");
+                        System.out.println("Added something to router message list");
                         break;
                     case 101: 
                         this.theLinkedLists.grendelRouterMessages.addLast(messageInQueue);
@@ -157,7 +157,7 @@ public class GrendelRouter extends BasicObject {
                         break;  
                     
                     }  
-                    System.out.println(java.time.LocalTime.now() + "end of processing loop");
+                    System.out.println(java.time.LocalTime.now() + " End of processing loop");
                 }  
             }
         }
