@@ -74,8 +74,8 @@ public class GreetingServer extends BasicObject {
         private boolean LockConnection = false;
         private final Socket clientSocket;
         allLinkedLists theLinkedListObject;
-        Message firstMessage = new Message(0,0,0,0,intAry,"");
-        Message testMessage = new Message(0,0,0,0,intAry,"");
+        Message firstMessage = new Message(0,0,0,0,intAry,"", false);
+        Message testMessage = new Message(0,0,0,0,intAry,"", false);
         LinkedList<Message> myOutputList;
         
         public EchoClientHandler(Socket socket,allLinkedLists aLLObj) {

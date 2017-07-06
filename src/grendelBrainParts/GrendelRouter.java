@@ -67,10 +67,12 @@ public class GrendelRouter extends BasicObject {
     public class Processor extends Thread {
         allLinkedLists theLinkedLists;
         Message messageInQueue;
+        int[] intAry = {};
 
         private Processor(allLinkedLists myLLObject) {
             this.theLinkedLists = new allLinkedLists();
             this.theLinkedLists = myLLObject;
+            messageInQueue = new Message(0,0,0,0,intAry,"", false);
         }
         //you have to pass all the linked lists for delivery to this function as it handles 
         // all of the sorting into the various out lists used by the various 
@@ -94,7 +96,7 @@ public class GrendelRouter extends BasicObject {
                     //if messege is going to device on internet:
                     //place in queue for that destination
                     // otherwise send directly to decider or analyzer
-                    switch (messageInQueue.showDestination(0)){
+                    switch (messageInQueue.showDestination()){
                     case 0:
                         break;
                     case 1:
