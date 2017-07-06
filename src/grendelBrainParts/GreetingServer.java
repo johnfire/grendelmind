@@ -129,7 +129,7 @@ public class GreetingServer extends BasicObject {
                             }
                             this.theLinkedListObject.unProcessedMessages.addLast(this.testMessage);
                             System.out.print(this.theLinkedListObject.unProcessedMessages.size() + "size of unprocessed list");
-                            System.out.println(java.time.LocalTime.now() + " -----*** in echoClientHandlerServer (" + this.myconnection + ")***-*-*-*-*-SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT----- " + this.testMessage.showID());
+                            System.out.println(java.time.LocalTime.now() + " -----*** in echoClientHandlerServer (" + this.myconnection + ")***-*-*-*-*-SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT-----" + this.testMessage.showMessageNr());
                         }catch (IOException e){
                             inFromClient.close();
                         }
