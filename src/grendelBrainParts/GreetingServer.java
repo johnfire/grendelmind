@@ -45,7 +45,7 @@ public class GreetingServer extends BasicObject {
        this.thelinkedListObject = aThis;
     }
    
-    /**
+    /**Creates and starts the server socket
      *
      */
     
@@ -83,7 +83,6 @@ public class GreetingServer extends BasicObject {
             this.clientSocket = socket; 
             this.theLinkedListObject =aLLObj;
             this.myOutputList = new LinkedList<>();
-            
         }
  
         @Override
@@ -93,22 +92,6 @@ public class GreetingServer extends BasicObject {
             System.out.println(java.time.LocalTime.now() + "-----*** in echoIndyServer ***----- System Message Entering client handler");
             
             try {
-                
-                
-                
-//                try {
-//                    firstMessage = (Message)inFromClient.readObject();
-//                    inFromClient.reset();
-//                    System.out.println("-----*** in echoIndyServer ***----- address of first message is"+ firstMessage);
-//                    this.theLinkedListObject.unProcessedMessages.add(firstMessage);
-//                    // test to see if lock connection neeeds to be set
-//                    
-//                } catch (ClassNotFoundException ex) {
-//                    Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
-//                    System.out.println("-----*** in echoIndyServer ***----- ERROR DID NOT GET FIRST MESSAGE!!!!!");
-//                }
-               
-                // my name is set, now enter loop and send and receive messages
                 
                 while(true) {
                     System.out.println(java.time.LocalTime.now() + "-----*** in echoIndyServer ***----- Starting echo server loop");
@@ -128,7 +111,7 @@ public class GreetingServer extends BasicObject {
                                 LockConnection = true;
                             }
                             this.theLinkedListObject.unProcessedMessages.addLast(this.testMessage);
-                            System.out.print(this.theLinkedListObject.unProcessedMessages.size() + "size of unprocessed list");
+                            System.out.print(this.theLinkedListObject.unProcessedMessages.size() + ": Size of unprocessed list");
                             System.out.println(java.time.LocalTime.now() + " -----*** in echoClientHandlerServer (" + this.myconnection + ")***-*-*-*-*-SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT-----" + this.testMessage.showMessageNr());
                         }catch (IOException e){
                             inFromClient.close();
