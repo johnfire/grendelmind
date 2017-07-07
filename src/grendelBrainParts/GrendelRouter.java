@@ -82,11 +82,11 @@ public class GrendelRouter extends BasicObject {
         public void run() {
             System.out.println(java.time.LocalTime.now() +" ----- Test Message----- Entered Processor run routine");
             while(true){
-//                try {
-//                    Thread.sleep(150);
-//                } catch (InterruptedException ex) {
-//                    Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
-//                }
+                try {
+                    Thread.sleep(150);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 //System.out.println(java.time.LocalTime.now() + "the size of the unprocessed file is " + this.theLinkedLists.unProcessedMessages.size());
                 
                 if (this.theLinkedLists.unProcessedMessages.size() > 0 ){
