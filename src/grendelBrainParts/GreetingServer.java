@@ -75,7 +75,7 @@ public class GreetingServer extends BasicObject {
         private final Socket clientSocket;
         allLinkedLists theLinkedListObject;
         Message firstMessage = new Message(0,0,0,0,intAry,"", false);
-        Message testMessage = new Message(0,0,0,0,intAry,"", false);
+        Message incomingMessage = new Message(0,0,0,0,intAry,"", false);
         LinkedList<Message> myOutputList;
         
         public EchoClientHandler(Socket socket,allLinkedLists aLLObj) {
@@ -100,19 +100,19 @@ public class GreetingServer extends BasicObject {
                        
                         try {
                             if(inFromClient.available() > 1){
-                                this.testMessage = (Message) inFromClient.readObject();
+                                this.incomingMessage = (Message) inFromClient.readObject();
                             }
                             if(LockConnection == false) {// lock this handler to the correct sender
-                                this.myconnection = this.testMessage.showOrigin();
+                                this.myconnection = this.incomingMessage.showOrigin();
                                 System.out.println(java.time.LocalTime.now() + " -----*** in echoIndyServer ***----- Just set my connection to " + this.myconnection);
                                 LockConnection = true;
                             }
-                            this.theLinkedListObject.unProcessedMessages.addLast(this.testMessage);
-                            System.out.print(this.theLinkedListObject.unProcessedMessages.size() + ": Size of unprocessed list right after message add \n");
-                            System.out.println(java.time.LocalTime.now() + " -----*** in echoClientHandlerServer (" + this.myconnection + ")***-*-*-*-*-SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT-----" + this.testMessage.showMessageNr());
+                            this.theLinkedListObject.unProcessedMessages.addLast(this.incomingMessage);
+                            System.out.print(this.theLinkedListObject.unProcessedMessages.size() + ":  in grendelServerecho client server :: Size of unprocessed list right after message add \n");
+                            System.out.println(java.time.LocalTime.now() + " -----*** in echoClientHandlerServer (" + this.myconnection + ")***-*-*-*-*-SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT-----" + this.incomingMessage.showMessageNr());
                         }catch (IOException e){
-                            inFromClient.close();
-                            outToClient.close();
+                           // inFromClient.close();
+                           // outToClient.close();
                         }
                         //this.theLinkedListObject.unProcessedMessages.removeAll(myMessageHolder);
                         
