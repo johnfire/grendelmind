@@ -129,7 +129,7 @@ public class GrendelRouter extends BasicObject {
                         this.theLinkedLists.outputMessages.addLast(messageInQueue);
                         break;
                     case 8: // interent interface
-                       this.theLinkedLists.internetMessages.addLast(messageInQueue);
+                        this.theLinkedLists.internetMessages.addLast(messageInQueue);
                         break;
                     case 9:
                         break;
