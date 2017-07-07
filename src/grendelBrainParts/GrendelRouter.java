@@ -46,21 +46,22 @@ public class GrendelRouter extends BasicObject {
         Thread theProcessorThread = new Thread(myProcessor);
         theServerThread.start();
         theProcessorThread.start();
-        this.systemMessageStartUp("----- Started the Grendel Router cell server thread-----");
+        this.systemMessageStartUp("----- in grendel router ::   Started the Grendel Router cell server and threads-----");
         
         while(true) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
                 Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
             }
             // check to see whats coming thru
-            if(myLinkedLists.unProcessedMessages != null){
+            if(myLinkedLists.unProcessedMessages.size() > 0){
                 System.out.println(this.myLinkedLists.unProcessedMessages + " These are addresses of the messages in unprocessed list.");
                 System.out.println(this.myLinkedLists.grendelRouterMessages + " These are addreses of messages in router list");
-                System.out.println(this.myLinkedLists.outputMessages + " these are the addresses of output list messages\n");
+                System.out.println(this.myLinkedLists.outputMessages + " these are the addresses of output list messages");
+                System.out.println("#######-############-#########- end of list");
             }
-            // more process code goes here
+            // more router code goes here
             
         }
     }
