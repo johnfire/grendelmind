@@ -29,6 +29,7 @@ public class allLinkedLists {
     public LinkedList<Message> grendelDeciderMessages;
     public LinkedList<Message> grendelRouterMessages;
     public LinkedList<Message> grendelGreetingServerMessages;
+    public boolean iAmLocked = false;
     
     public allLinkedLists() {
         this.unProcessedMessages = new LinkedList();
