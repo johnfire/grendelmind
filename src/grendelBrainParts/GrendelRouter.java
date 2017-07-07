@@ -71,7 +71,7 @@ public class GrendelRouter extends BasicObject {
         Message messageInQueue;
         int[] intAry = {};
 
-        private Processor(allLinkedLists myLLObject) {
+        public  Processor(allLinkedLists myLLObject) {
             this.theLinkedLists = new allLinkedLists();
             this.theLinkedLists = myLLObject;
             messageInQueue = new Message(0,0,0,0,intAry,"", false);
@@ -89,9 +89,19 @@ public class GrendelRouter extends BasicObject {
                     Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 //System.out.println(java.time.LocalTime.now() + "the size of the unprocessed file is " + this.theLinkedLists.unProcessedMessages.size());
+                while(this.theLinkedLists.iAmLocked == true ){
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                if(this.theLinkedLists.iAmLocked== false){
+                    this.theLinkedLists.iAmLocked = true;
+                }
                 
                 if (this.theLinkedLists.unProcessedMessages.size() > 0 ){
-                    System.out.println(java.time.LocalTime.now() + " -----Test Message ----- Entering sort loop");
+                    System.out.println(java.time.LocalTime.now() + " -----Test Message -----in Processor-----  Entering sort loop");
                     // read destination
                     messageInQueue = this.theLinkedLists.unProcessedMessages.removeFirst();
 
@@ -161,6 +171,7 @@ public class GrendelRouter extends BasicObject {
                         break;  
                     
                     }  
+                    this.theLinkedLists.iAmLocked = false;
                     System.out.println(java.time.LocalTime.now() + " End of processing loop");
                 }  
             }
