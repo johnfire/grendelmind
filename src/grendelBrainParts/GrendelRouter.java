@@ -84,13 +84,14 @@ public class GrendelRouter extends BasicObject {
             System.out.println(java.time.LocalTime.now() +" ----- Test Message----- Entered Processor run routine");
             while(true){
                 try {
-                    Thread.sleep(150);
+                    Thread.sleep(10);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 //System.out.println(java.time.LocalTime.now() + "the size of the unprocessed file is " + this.theLinkedLists.unProcessedMessages.size());
-                while(this.theLinkedLists.iAmLocked == true ){
+                while(true == this.theLinkedLists.iAmLocked ){
                     try {
+                        //System.out.println("processor method is going to sleep");
                         Thread.sleep(5);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
