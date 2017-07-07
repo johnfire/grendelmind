@@ -86,35 +86,33 @@ public class GreetingServer extends BasicObject {
         }
  
         @Override
-        @SuppressWarnings("empty-statement")
         public void run() {
             LinkedList<Message> myMessageHolder = new LinkedList();
             System.out.println(java.time.LocalTime.now() + "-----*** in echoIndyServer ***----- System Message Entering client handler");
             
             try {
-                
+                ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+                ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
                 while(true) {
                     System.out.println(java.time.LocalTime.now() + "-----*** in echoIndyServer ***----- Starting echo server loop");
                     try {
-                        int x =1;
-                        // read objects from input srtream as available
-                        boolean anObject;
-                        ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
-                        ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
+                        //streams came from here
+                       
                         try {
-                            
-                            this.testMessage = (Message) inFromClient.readObject();
-                            
+                            if(inFromClient.available() > 1){
+                                this.testMessage = (Message) inFromClient.readObject();
+                            }
                             if(LockConnection == false) {// lock this handler to the correct sender
                                 this.myconnection = this.testMessage.showOrigin();
                                 System.out.println(java.time.LocalTime.now() + " -----*** in echoIndyServer ***----- Just set my connection to " + this.myconnection);
                                 LockConnection = true;
                             }
                             this.theLinkedListObject.unProcessedMessages.addLast(this.testMessage);
-                            System.out.print(this.theLinkedListObject.unProcessedMessages.size() + ": Size of unprocessed list");
+                            System.out.print(this.theLinkedListObject.unProcessedMessages.size() + ": Size of unprocessed list right after message add \n");
                             System.out.println(java.time.LocalTime.now() + " -----*** in echoClientHandlerServer (" + this.myconnection + ")***-*-*-*-*-SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT-----" + this.testMessage.showMessageNr());
                         }catch (IOException e){
                             inFromClient.close();
+                            outToClient.close();
                         }
                         //this.theLinkedListObject.unProcessedMessages.removeAll(myMessageHolder);
                         
@@ -174,7 +172,7 @@ public class GreetingServer extends BasicObject {
                             outToClient.writeObject(myOutputList.removeFirst());
                             System.out.println(java.time.LocalTime.now() + "-----*** echo Server Sender (" + this.myconnection + ")***-#-#-#-#-#- SENDING MESSAGE FROM ROUTER SOMEWHERE Just sent message");
                         }  catch (IOException ex){
-                           outToClient.close();
+                           //outToClient.close();
                         }
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
