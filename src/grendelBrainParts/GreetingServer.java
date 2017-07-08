@@ -51,7 +51,6 @@ public class GreetingServer extends BasicObject  {
     private final ByteBuffer buf = ByteBuffer.allocate(5000);
     private final ByteBuffer welcomeBuf = ByteBuffer.wrap("blank data for test".getBytes());
 
-
     GreetingServer(allLinkedLists myLinkedLists) throws IOException {
          
         theLinkedListObject = myLinkedLists;
@@ -60,8 +59,7 @@ public class GreetingServer extends BasicObject  {
         this.ssc.socket().bind(new InetSocketAddress(port));
         this.ssc.configureBlocking(false);
         this.selector = Selector.open();
-        this.ssc.register(selector, SelectionKey.OP_ACCEPT);
-        
+        this.ssc.register(selector, SelectionKey.OP_ACCEPT); 
     }
    
     /**Creates and starts the server socket
@@ -72,6 +70,7 @@ public class GreetingServer extends BasicObject  {
     public void run() {
 
         try {
+            
             this.systemMessage("GrendelGreetingServer starting on port " + this.port);
 
             Iterator<SelectionKey> iter;
@@ -86,6 +85,7 @@ public class GreetingServer extends BasicObject  {
                     if(key.isAcceptable()) this.handleAccept(key);
                     if(key.isReadable()) this.handleRead(key);
                     if(key.isWritable()) this.handleWrite(key);
+                    
                 }
             }
         } catch(IOException e) {
