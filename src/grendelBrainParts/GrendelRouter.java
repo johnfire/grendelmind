@@ -6,6 +6,7 @@
 package grendelBrainParts;
 
 import basicstuff.*;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,41 +29,46 @@ public class GrendelRouter extends BasicObject {
     @Override
     public void run() {
         
-        this.systemMessageStartUp("Starting the grendel Router cell");
-        
-        ObjectStatus myStats = new basicstuff.ObjectStatus();
-        myStats.setMyName("grendelRouter");
-        Thread routerThread = new Thread(myStats);
-        routerThread.start();
-        
-        this.systemMessage("Just completed the Grendel Router start stats routine");
-        
-        //create server and run
-        GreetingServer myServer;
-        Processor myProcessor;
-        myProcessor = new Processor(myLinkedLists);
-        myServer = new GreetingServer(myLinkedLists);
-        Thread theServerThread = new Thread(myServer);
-        Thread theProcessorThread = new Thread(myProcessor);
-        theServerThread.start();
-        theProcessorThread.start();
-        this.systemMessageStartUp("----- in grendel router ::   Started the Grendel Router cell server and threads-----");
-        
-        while(true) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            // check to see whats coming thru
-            if(myLinkedLists.unProcessedMessages.size() > 0){
-                System.out.println(this.myLinkedLists.unProcessedMessages + " These are addresses of the messages in unprocessed list.");
-                System.out.println(this.myLinkedLists.grendelRouterMessages + " These are addreses of messages in router list");
-                System.out.println(this.myLinkedLists.outputMessages + " these are the addresses of output list messages");
-                System.out.println("#######-############-#########- end of list");
-            }
-            // more router code goes here
+        try {
+            this.systemMessageStartUp("Starting the grendel Router cell");
             
+            ObjectStatus myStats = new basicstuff.ObjectStatus();
+            myStats.setMyName("grendelRouter");
+            Thread routerThread = new Thread(myStats);
+            routerThread.start();
+            
+            this.systemMessage("Just completed the Grendel Router start stats routine");
+            
+            //create server and run
+            GreetingServer myServer;
+            Processor myProcessor;
+            myProcessor = new Processor(myLinkedLists);
+            myServer = new GreetingServer(myLinkedLists);
+            
+            Thread theServerThread = new Thread(myServer);
+            Thread theProcessorThread = new Thread(myProcessor);
+            theServerThread.start();
+            theProcessorThread.start();
+            this.systemMessageStartUp("----- in grendel router ::   Started the Grendel Router cell server and threads-----");
+            
+            while(true) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                // check to see whats coming thru
+                if(myLinkedLists.unProcessedMessages.size() > 0){
+                    System.out.println(this.myLinkedLists.unProcessedMessages + " These are addresses of the messages in unprocessed list.");
+                    System.out.println(this.myLinkedLists.grendelRouterMessages + " These are addreses of messages in router list");
+                    System.out.println(this.myLinkedLists.outputMessages + " these are the addresses of output list messages");
+                    System.out.println("#######-############-#########- end of list");
+                }
+                // more router code goes here
+                
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
