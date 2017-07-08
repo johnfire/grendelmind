@@ -36,7 +36,7 @@ import java.util.logging.Logger;
  * @author christopherrehm
  */
 
-public class GreetingServer extends BasicObject {
+public class GreetingServer extends BasicObject  {
 
     allLinkedLists thelinkedListObject = new allLinkedLists();
     private ServerSocket serverSocket;
@@ -51,6 +51,7 @@ public class GreetingServer extends BasicObject {
     
     @Override
     public void run() {
+
         try {
             serverSocket = new ServerSocket(5000);
             this.systemMessageStartUp(java.time.LocalTime.now() + "-----Greeting Server----- Started the ServerSocket-----");
@@ -58,9 +59,10 @@ public class GreetingServer extends BasicObject {
                 new EchoClientHandler(serverSocket.accept(), this.thelinkedListObject).start();
                 this.systemMessageStartUp(java.time.LocalTime.now() + "-----Greeting Server----- Started new echo server handler");
             }
-        } catch (IOException e) {
-            this.systemMessageError(java.time.LocalTime.now() + "Failure at the echoClientServer startup");
+        } catch (IOException ex) {
+            Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
     
     /** this is the object that actually handles comm between server and a client.
@@ -68,7 +70,7 @@ public class GreetingServer extends BasicObject {
      */
     
     //this is supposed to be static
-    public static class EchoClientHandler extends Thread {
+    public static class EchoClientHandler extends Thread{
         int[] intAry = {1,2,3};
         private int myconnection = 0;
         private boolean LockConnection = false;
@@ -88,33 +90,40 @@ public class GreetingServer extends BasicObject {
  
         @Override
         public void run() {
-            LinkedList<Message> myMessageHolder = new LinkedList();
-            System.out.println(java.time.LocalTime.now() + "-----*** in echoIndyServer ***----- System Message Entering client handler");
-            
+            ObjectOutputStream outToClient = null;
             try {
-                ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+                LinkedList<Message> myMessageHolder = new LinkedList();
+                System.out.println(java.time.LocalTime.now() + "-----*** in echoIndyServer ***----- System Message Entering client handler");
+                outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
                 ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
                 while(true) {
-                    System.out.println(java.time.LocalTime.now() + "-----*** in echoIndyServer ***----- Starting echo server loop");
+                    //streams came from here
+                    
                     try {
-                        //streams came from here
-                       
-                        try {
-                           
-                            if(10 <=inFromClient.available()){
-                                Message arrivingMessage = (Message) inFromClient.readObject();
-                                this.firstMessage = arrivingMessage;
+                        //System.out.println("ok i am entering the try statement before inFromClient.readObject");
+                        if(inFromClient.available() > 1){
+                            Message arrivingMessage = null;
+                            try {
+                                arrivingMessage  = (Message) inFromClient.readObject();
+                            } catch (ClassNotFoundException ex) {
+                                Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
                             }
+                            System.out.println("the object is "+ arrivingMessage .showID() +":id     "+ arrivingMessage .showOrigin()+ ":origin    " + arrivingMessage .showDestination());
+                            this.firstMessage = arrivingMessage ;
+                            
                             if(LockConnection == false) {// lock this handler to the correct sender
                                 this.myconnection = this.firstMessage.showOrigin();
-                                System.out.println("the object is "+ this.firstMessage.showID() +":id     "+ this.firstMessage.showOrigin()+ ":origin    " + firstMessage.showDestination());
                                 System.out.println(java.time.LocalTime.now() + " -----*** in echoIndyServer ***----- Just set my connection to " + this.myconnection);
                                 LockConnection = true;
                             }
                             // lock linked list object
                             while(theLinkedListObject.iAmLocked == true){
-                                //System.out.println("server sort thread is going to sleep");
-                                Thread.sleep(5);
+                                System.out.println("Server sort thread is going to sleep because lists are locked. ");
+                                try {
+                                    Thread.sleep(5);
+                                } catch (InterruptedException ex) {
+                                    Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                             }
                             if(theLinkedListObject.iAmLocked == false ){
                                 theLinkedListObject.iAmLocked = true;
@@ -122,13 +131,13 @@ public class GreetingServer extends BasicObject {
                             // use object
                             this.theLinkedListObject.unProcessedMessages.addLast(this.firstMessage);
                             System.out.print(this.theLinkedListObject.unProcessedMessages.size() + ":  in grendelServerecho client server :: Size of unprocessed list right after message add \n");
-                            System.out.println(java.time.LocalTime.now() + " -----*** in echoClientHandlerServer (" + this.myconnection + ")***-*-*-*-*-SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT-----" + this.arrivingMessage.showMessageNr());
-                        }catch (IOException e){
-                           // inFromClient.close();
-                           // outToClient.close();
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
+                            // inFromClient.close();
+                            // outToClient.close();      System.out.println(java.time.LocalTime.now() + " -----*** in echoClientHandlerServer (" + this.myconnection + ")***-*-*-*-*-SYSTEM MESSAGES-RECIEVED some MESSAGE OBJECT-----" + this.arrivingMessage.showMessageNr());
                         }
+                        
+                        // inFromClient.close();
+                        // outToClient.close();
+ 
                         //this.theLinkedListObject.unProcessedMessages.removeAll(myMessageHolder);
                         
                         //done getting messages now  send messages
@@ -179,30 +188,34 @@ public class GreetingServer extends BasicObject {
                             case 102:
                                 break;
                             default:
-                                break;      
+                                break;
                         }
                         
                         //this code sends out all messages to where they need to go.
-                        while (myOutputList.isEmpty() != true) try{
+                        while (myOutputList.isEmpty() != true) {
                             Message outgoingMessage = new Message(0,0,0,0,intAry,"in GreetingServer", false);
                             outgoingMessage = myOutputList.removeFirst();
                             outToClient.writeObject(outgoingMessage);
                             System.out.println(java.time.LocalTime.now() + "-----*** echo Server Sender (" + this.myconnection + ")***-#-#-#-#-#- SENDING MESSAGE FROM ROUTER SOMEWHERE Just sent message");
-                        }  catch (IOException ex){
-                           //outToClient.close();
                         }
-                        this.theLinkedListObject.iAmLocked =false;
-                    } catch (ClassNotFoundException ex) {
+                    }catch (IOException ex){
                         Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
-                    }   
+                    }
+                    //outToClient.flush();
+                    //inFromClient.reset();
+                    this.theLinkedListObject.iAmLocked =false;
                 }
-            } catch (IOException ex){
-                Logger.getLogger(GrendelRouter.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    outToClient.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(GreetingServer.class.getName()).log(Level.SEVERE, null, ex);
+                }   
             }
         }
     }
-        
-    private void log(String message) {
-        System.out.println(message);
-    }  
 }
+        
+    
